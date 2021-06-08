@@ -1,0 +1,5 @@
+node_modules
+.env
+.env.test
+access.log
+package-lock.json
