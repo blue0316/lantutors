@@ -1,7 +1,6 @@
-# Lanturn's Interns
-
-Lanturn Academy's backend API app for managing and connecting Lanturn mentors with Lanturn interns.
-The app's overwhelming purpose and value is for registered tutors to performvadministrative functions for their classes and students.
+# Lantutors
+Scholastic administrative app for educators, home-based tutors, and mentors to connect with students whose scholastic paths have been affected by the pandemic and can benefit from after-school or full-time tutoring.
+The app's overwhelming long-term purpose and value is for registered tutors to perform administrative functions for on-campus or remote-based classes effectively and consistently.
 
 ## UX
 ### User Stories
