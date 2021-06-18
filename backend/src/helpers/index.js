@@ -3,7 +3,13 @@ export const successResponse = (req, res, data = {}, code = 200) =>
     ...data,
   });
 
-export const errorResponse = (req, res, message = "Something went wrong", code = 500, error = {}) =>
+export const errorResponse = (
+  req,
+  res,
+  message = 'Something went wrong',
+  code = 500,
+  error = {}
+) =>
   res.status(500).json({
     code,
     message,

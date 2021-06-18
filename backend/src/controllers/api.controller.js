@@ -1,5 +1,5 @@
-import { successResponse, errorResponse } from "../helpers";
-import RegisterStudents from "../services/RegisterStudents";
+import { successResponse, errorResponse } from '../helpers';
+import RegisterStudents from '../services/RegisterStudents';
 
 export const register = async (req, res) => {
   try {
