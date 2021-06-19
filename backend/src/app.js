@@ -10,6 +10,10 @@ app.use(cors());
 
 app.use('/api', apiRoutes);
 
+app.get('/', async (req, res) => {
+  res.json('Api is running');
+});
+
 app.use(function (err, req, res, next) {
   if (err instanceof ValidationError) {
     return res.status(err.statusCode).json(err);
