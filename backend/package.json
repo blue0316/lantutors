@@ -8,6 +8,8 @@
     "dev": "nodemon -r dotenv/config src/server.js dotenv_config_path=./.env",
     "db:create": "npx sequelize-cli db:create",
     "db:migrate": "npx sequelize-cli db:migrate",
+    "db:drop": "npx sequelize-cli db:drop",
+    "db:seed": "npx sequelize-cli db:seed:all",
     "test": "jest --testTimeout=30000  --watchAll --runInBand ",
     "pretest": "cross-env NODE_ENV=test npm run db:reset:test",
     "db:create:test": "cross-env NODE_ENV=test npx sequelize-cli db:create",
@@ -45,6 +47,7 @@
     "joi": "^17.4.0",
     "mysql2": "^2.2.5",
     "sequelize": "^6.5.0",
+    "sequelize-auto-migrations": "^1.0.3",
     "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
