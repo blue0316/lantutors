@@ -17,9 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'cascade',
         hooks: true,
       });
-      this.belongsToMany(models.Notification, {
+      this.belongsToMany(models.Tutor, {
         through: 'StudentNotifications',
         sourceKey: 'username',
+        targetKey: 'username',
         foreignKey: 'studentName',
         onUpdate: 'cascade',
         onDelete: 'cascade',
@@ -38,7 +39,14 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
         validate: {
-          isEmail: true,
+          validateEmail(email, next) {
+            const re = /\S+@\S+\.\S+/;
+            if (re.test(email)) {
+              return next();
+            } else {
+              return next('Email is invalid');
+            }
+          },
         },
       },
       suspended: {
@@ -51,6 +59,16 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Student',
+      hooks: {
+        afterCreate: async (student, options) => {
+          student.username = await student.email.split('@')[0];
+        },
+        beforeUpdate: async () => {
+          if (student.changed('username')) {
+            student.username = await student.email.split('@')[0];
+          }
+        },
+      },
     }
   );
   return Student;
