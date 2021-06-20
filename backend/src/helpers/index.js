@@ -1,3 +1,5 @@
+import * as db from '../models/index';
+
 export const successResponse = (req, res, data = {}, code = 200) =>
   res.status(code).json({
     ...data,
@@ -15,3 +17,27 @@ export const errorResponse = (
     message,
     error,
   });
+
+export const getAllStudentsByEmail = () => {
+  return db.Student.findAll({}).then((results) => ({
+    students: results.map((result) => result.email),
+  }));
+};
+
+export const getAllStudentsByTutorName = (tutorName) => {
+  return db.TutorStudent.findAll({
+    where: {
+      tutorName: tutorName,
+    },
+  }).then((results) => ({
+    tutor: tutorName,
+    students: results.map((result) => result.studentName),
+  }));
+};
+
+// export const getAllCommonStudents = () => {
+//   return db.TutorStudent.findAll({}).then((results) => ({
+//     tutor: tutorName,
+//     students: results.map((result) => result.studentName),
+//   }));
+// };
