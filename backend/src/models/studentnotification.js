@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
       notificationId: {
         type: DataTypes.INTEGER,
         references: {
-          // model: models.Notification,
           model: 'Notification',
           key: 'id',
           as: 'notificationId',
@@ -24,12 +23,33 @@ module.exports = (sequelize, DataTypes) => {
       },
       studentName: {
         type: DataTypes.STRING,
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
         references: {
-          // model: models.Student,
           model: 'Student',
           key: 'username',
           as: 'studentName',
         },
+      },
+      tutorName: {
+        type: DataTypes.STRING,
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+        references: {
+          model: 'Tutor',
+          key: 'username',
+          as: 'tutorName',
+        },
+      },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: `[Lantutors] Message from your Tutor`,
+      },
+      message: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: `Welcome to Lantutors`,
       },
     },
     {
