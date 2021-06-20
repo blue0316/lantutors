@@ -13,14 +13,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   StudentNotification.init(
     {
-      notificationId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'Notification',
-          key: 'id',
-          as: 'notificationId',
-        },
-      },
       studentName: {
         type: DataTypes.STRING,
         onDelete: 'cascade',
