@@ -40,15 +40,15 @@ module.exports = {
           defaultValue: `[Lantutors] Message from your Tutor`,
         }
       ),
-      queryInterface.addColumn(
-        'StudentNotifications', // table name
-        'message', // new field name
-        {
-          type: Sequelize.STRING,
-          allowNull: false,
-          defaultValue: `Welcome to Lantutors`,
-        }
-      ),
+      // queryInterface.addColumn(
+      //   'StudentNotifications', // table name
+      //   'message', // new field name
+      //   {
+      //     type: Sequelize.STRING,
+      //     allowNull: false,
+      //     defaultValue: `Welcome to Lantutors`,
+      //   }
+      // ),
     ]);
   },
 
