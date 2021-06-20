@@ -1,4 +1,5 @@
 'use strict';
+import { compareSync, genSalt, hash } from 'bcryptjs';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Tutor extends Model {
@@ -9,8 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Notification, {
+      this.belongsToMany(models.Student, {
+        through: 'StudentNotifications',
         sourceKey: 'username',
+        targetKey: 'username',
         foreignKey: 'tutorName',
         onUpdate: 'cascade',
         onDelete: 'cascade',
@@ -26,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
         hooks: true,
       });
     }
+    checkPassword(encodedPassword, password) {
+      return compareSync(password, encodedPassword);
+    }
   }
   Tutor.init(
     {
@@ -38,7 +44,14 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
         validate: {
-          isEmail: true,
+          validateEmail(email, next) {
+            const re = /\S+@\S+\.\S+/;
+            if (re.test(email)) {
+              return next();
+            } else {
+              return next('Email is invalid');
+            }
+          },
         },
       },
       password: {
@@ -52,6 +65,21 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Tutor',
+      hooks: {
+        beforeCreate: async (tutor, options) => {
+          const salt = await genSalt();
+          tutor.password = await hash(tutor.password, salt);
+        },
+        afterCreate: async (tutor, options) => {
+          tutor.username = await tutor.email.split('@')[0];
+        },
+        beforeUpdate: async () => {
+          if (tutor.changed('password')) {
+            const salt = await genSalt();
+            tutor.password = await hash(tutor.password, salt);
+          }
+        },
+      },
     }
   );
   return Tutor;
