@@ -1,16 +1,18 @@
-import * as React from 'react'
-
-import { User } from '../interfaces'
+import { Student } from '../interfaces';
 
 type ListDetailProps = {
-  item: User
-}
+  student: Student;
+};
 
-const ListDetail = ({ item: user }: ListDetailProps) => (
+const ListDetail = ({ student }: ListDetailProps) => (
   <div>
-    <h1>Detail for {user.name}</h1>
-    <p>ID: {user.id}</p>
+    {student.email && <h1>Detail for {student.email}</h1>}
+    {student.id && <p>ID: {student.id}</p>}
+    {student.username && <p>Username: {student.username}</p>}
+    {typeof student.suspended === 'boolean' && (
+      <p>Suspended: {student.suspended.toString()}</p>
+    )}
   </div>
-)
+);
 
-export default ListDetail
+export default ListDetail;

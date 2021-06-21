@@ -134,22 +134,23 @@ const Header = ({ tutors }: Props) => {
         variant="dense"
         className={classes.toolbarSecondary}
       >
-        {tutors.map((tutor) => (
-          <Link
-            key={tutor.id}
-            href={`/tutors/${encodeURIComponent(tutor.email)}`}
-          >
-            <Typography
-              component="a"
-              variant="body2"
-              noWrap
-              className={classes.toolbarLink}
-              style={{ cursor: 'pointer' }}
+        {tutors &&
+          tutors.map((tutor) => (
+            <Link
+              key={tutor.id}
+              href={`/tutors/${encodeURIComponent(tutor.email)}`}
             >
-              {tutor.username}
-            </Typography>
-          </Link>
-        ))}
+              <Typography
+                component="a"
+                variant="body2"
+                noWrap
+                className={classes.toolbarLink}
+                style={{ cursor: 'pointer' }}
+              >
+                {tutor.username}
+              </Typography>
+            </Link>
+          ))}
       </Toolbar>
       <AppBar
         position="relative"
