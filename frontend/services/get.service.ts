@@ -12,7 +12,8 @@ import axios from 'axios';
  * Api backend base URL DEVELOPMENT.
  */
 const axiosConfig = {
-  baseURL: ' http://127.0.0.1:4000/api',
+  baseURL: 'http://127.0.0.1:4000/api',
+  withCredentials: true,
 };
 
 /**
@@ -72,8 +73,8 @@ function getStudents() {
  *
  * @param {string} username database document `username` of student
  */
-function getStudent(username: string) {
-  return axios.get(`students/${username}`);
+function getStudent(username: any) {
+  return axios.get(`students/${username}`, axiosConfig);
 }
 
 /**
@@ -90,8 +91,8 @@ function getTutors() {
  *
  * @param {string} username database document `username` of student
  */
-function getTutor(username: string) {
-  return axios.get(`tutors/${username}`);
+function getTutor(username: any) {
+  return axios.get(`tutors/${username}`, axiosConfig);
 }
 
 /**
