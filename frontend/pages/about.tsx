@@ -1,8 +1,14 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import Link from 'next/link';
+import Layout from '../components/Layout';
 
-const AboutPage = () => (
-  <Layout title="About | Next.js + TypeScript Example">
+import { Tutor } from '../interfaces';
+import { getTutors } from '../services/get.service';
+
+type Props = {
+  tutors: Tutor[];
+};
+const AboutPage = ({ tutors }: Props) => (
+  <Layout title="RingsListings: All Listings" tutors={tutors}>
     <h1>About</h1>
     <p>This is the about page</p>
     <p>
@@ -11,6 +17,16 @@ const AboutPage = () => (
       </Link>
     </p>
   </Layout>
-)
+);
 
-export default AboutPage
+export async function getServerSideProps() {
+  const allTutors = await getTutors();
+
+  return {
+    props: {
+      tutors: allTutors.data,
+    },
+  };
+}
+
+export default AboutPage;
