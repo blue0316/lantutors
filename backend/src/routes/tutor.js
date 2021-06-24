@@ -1,7 +1,17 @@
-import {
-  getAllStudentsByEmail,
-  getAllStudentsByTutorName,
-} from '../helpers/index';
+/**
+ * Raw Queries: `Tutor`
+ * Endpoint: `/api/tutors`
+ * Additional CRUD-specific endpoint/handlers for the `Tutor` class
+ *
+ * These additional endpoints, namely, `PUT, DELETE`, currently do not have a
+ * frontend counterpart, but can be used as helper tests for the frontend,
+ * and can be adjusted should the spec require it in future feature implementations.
+ *
+ * @note Not attached to any validators or controllers
+ * @see models.tutor
+ * @file defines tutorsApi
+ * @since 24/06/2021
+ */
 
 export function tutorsApi(db, router) {
   /**
@@ -16,11 +26,10 @@ export function tutorsApi(db, router) {
 
   /**
    * POST route for creating Tutor records
-   * @method SELECT * FROM students WHERE username = <username>
    */
   router.post('/tutors', function (req, res) {
     /**
-     * Add sequelize code to create a Student record via req.body,
+     * Add sequelize code to create a Tutor record via req.body,
      * return the result to the user with res.json
      */
     db.Tutor.create({
@@ -29,28 +38,21 @@ export function tutorsApi(db, router) {
     }).then(function (result) {
       res.json(result);
     });
-
-    // const { students } = await getAllStudentsByTutorName(tutor);
-
-    // res.json({
-    //   tutor: tutor,
-    //   students: incomingStudents.map((student) => student),
-    // });
   });
 
   /**
    * GET route for returning one Tutor record
-   * @method SELECT * FROM tutors WHERE username = <username>
+   * @method SELECT * FROM tutors WHERE email = <email>
    */
-  router.get('/tutors/:username', async (req, res) => {
+  router.get('/tutors/:email', async (req, res) => {
     /**
-     * Add sequelize code to find a Student record where
-     * the Tutor.username is equal to req.params.username.
+     * Add sequelize code to find a Tutor record where
+     * the Tutor.email is equal to req.params.email.
      * return the result to the user with res.json
      */
     db.Tutor.findOne({
       where: {
-        username: req.params.username,
+        email: req.params.email,
       },
     }).then(function (result) {
       res.json(result);
@@ -59,17 +61,17 @@ export function tutorsApi(db, router) {
 
   /**
    * DELETE route for deleting Tutor records
-   * @method SELECT * FROM tutors WHERE username = <username>
+   * @method SELECT * FROM tutors WHERE email = <email>
    */
-  router.delete('/tutors/:username', function (req, res) {
+  router.delete('/tutors/:email', function (req, res) {
     /**
      * Add sequelize code to delete a Tutor record where
-     * the Tutor.username is equal to req.params.username.
+     * the Tutor.email is equal to req.params.email.
      * return the result to the user with res.json
      */
     db.Tutor.destroy({
       where: {
-        username: req.params.username,
+        email: req.params.email,
       },
     }).then(function (result) {
       res.json(result);
@@ -77,24 +79,24 @@ export function tutorsApi(db, router) {
   });
 
   /**
-   * PUT route for updating Student records
-   * @method SELECT * FROM students WHERE username = <username>
+   * PUT route for updating Tutor records
+   * @method SELECT * FROM tutors WHERE email = <email>
    */
-  router.put('/tutors', function (req, res) {
+  router.put('/tutors/:email', function (req, res) {
     /**
-     * Add sequelize code to update a Student record via
+     * Add sequelize code to update a Tutor record via
      * the values of req.body, where
-     * username is equal to req.body.username.
+     * email is equal to req.body.email.
      * return the result to the user with res.json
      */
     db.Tutor.update(
       {
         email: req.body.email,
-        suspended: req.body.suspended,
+        password: req.body.password,
       },
       {
         where: {
-          username: req.body.username,
+          email: req.body.email,
         },
       }
     ).then(function (result) {

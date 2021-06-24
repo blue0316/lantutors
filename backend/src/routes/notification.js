@@ -1,6 +1,21 @@
+/**
+ * Raw Queries: `StudentNotification`
+ * Endpoint: `/api/notifications`
+ * Additional CRUD-specific endpoint/handlers for the `StudentNotifications` assoc.
+ *
+ * These additional endpoints, namely, `PUT, DELETE`, currently do not have a
+ * frontend counterpart, but can be used as helper tests for the frontend,
+ * and can be adjusted should the spec require it in future feature implementations.
+ *
+ * @note Not attached to any validators or controllers
+ * @see models.studentnotifications
+ * @file defines notificationsApi
+ * @since 24/06/2021
+ */
+
 import {
   getAllStudentsByEmail,
-  getAllStudentsByTutorName,
+  getAllStudentsByTutor,
 } from '../helpers/index';
 
 export function notificationsApi(db, router) {
@@ -40,15 +55,55 @@ export function notificationsApi(db, router) {
    * @note an issuance of the same notification may be necessary for all students
    */
   router.post('/notifications', async function (req, res) {
+    const tutor = await req.body.tutor;
+    const notification = await req.body.notification;
+    /**
+     * Array of all registered students
+     */
+    const currentStudents = await getAllStudentsByEmail();
+    /**
+     * Array of all registered students assigned to this tutor
+     * as default recipients of any notification from this tutor
+     */
+    const defaultRecipients = await getAllStudentsByTutor(tutor);
+
+    const notificationsArr = notification.split(' ');
+
+    let recipients = [];
+    // for every word in the notification
+    for (const mention in notificationsArr) {
+      const iterator = notificationsArr[mention];
+      // if the word starts with `@`
+      if (iterator.startsWith('@')) {
+        const foundEmail = iterator.split(/@(.+)/)[1];
+        // if the substring after the first `@` matches with a registered student's email
+        if (currentStudents.students.includes(foundEmail)) {
+          recipients.push(foundEmail);
+        }
+      }
+    }
+
+    for (const name in defaultRecipients) {
+      const iterator = defaultRecipients[name];
+      const student = db.Student.findOne({
+        where: {
+          username: iterator,
+        },
+      });
+      if (student) {
+        recipients.push(student.email);
+      }
+    }
+
     /**
      * Add sequelize code to create a Notification-Student-Tutor record via req.body,
      * return the result to the user with res.json
      */
     db.StudentNotification.create({
-      tutorName: req.body.tutorName,
+      tutor: tutor,
       title: req.body.title,
-      message: req.body.message,
-      studentName: req.body.studentName,
+      message: notification,
+      student: req.body.student,
     }).then(function (result) {
       res.json(result);
     });
@@ -57,17 +112,17 @@ export function notificationsApi(db, router) {
   /**
    * GET route for returning all Notification-Student-Tutor record issued by one Tutor
    * via Notification-Student-Tutor association
-   * @method SELECT * FROM studentnotifications WHERE tutorName = <tutorname>
+   * @method SELECT * FROM studentnotifications WHERE tutor = <tutor>
    */
-  router.get('/notifications/:tutorName', async function (req, res) {
+  router.get('/notifications/:tutor', async function (req, res) {
     /**
      * Add sequelize code to find all Notification-Student-Tutor associations where
-     * the tutorNAme is equal to req.params.tutorname.
+     * the tutor is equal to req.params.tutor.
      * return the result to the user with res.json
      */
     db.StudentNotification.findAll({
       where: {
-        tutorName: req.params.tutorName,
+        tutor: req.params.tutor,
       },
     }).then(function (result) {
       res.json(result);
@@ -77,12 +132,12 @@ export function notificationsApi(db, router) {
   /**
    * GET route for returning one Notification-Student-Tutor record by id
    * via TutorStudent association
-   * @method SELECT * FROM tutorstudents WHERE id = <id>
+   * @method SELECT * FROM studentnotifications WHERE id = <id>
    */
   router.get('/notifications/:id', async function (req, res) {
     /**
      * Add sequelize code to find all Notification-Student-Tutor associations where
-     * the tutorNAme is equal to req.params.tutorname.
+     * the id is equal to req.params.id.
      * return the result to the user with res.json
      */
     db.StudentNotification.findAll({
@@ -96,12 +151,12 @@ export function notificationsApi(db, router) {
 
   /**
    * DELETE route for deleting Notification-Student-Tutor associations
-   * @method SELECT * FROM students WHERE id = <id>
+   * @method SELECT * FROM studentnotifications WHERE id = <id>
    */
   router.delete('/notifications/:id', function (req, res) {
     /**
-     * Add sequelize code to delete a TutorStudent record where
-     * the TutorStudent.id is equal to req.params.id.
+     * Add sequelize code to delete a Student-Notification record where
+     * the studentnotification.id is equal to req.params.id.
      * return the result to the user with res.json
      */
     db.StudentNotification.destroy({
@@ -117,7 +172,7 @@ export function notificationsApi(db, router) {
    * PUT route for updating Notification-Student-Tutor records
    * @method SELECT * FROM studentnotifications WHERE id = <id>
    */
-  router.put('/notifications', function (req, res) {
+  router.put('/notifications/:id', function (req, res) {
     /**
      * Add sequelize code to update a Notification-Student-Tutor record via
      * the values of req.body, where
@@ -126,10 +181,10 @@ export function notificationsApi(db, router) {
      */
     db.StudentNotification.update(
       {
-        tutorName: req.body.tutorName,
+        tutor: req.body.tutor,
         title: req.body.title,
         message: req.body.message,
-        studentName: req.body.studentName,
+        student: req.body.student,
       },
       {
         where: {

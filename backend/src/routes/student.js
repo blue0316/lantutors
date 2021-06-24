@@ -1,6 +1,20 @@
+/**
+ * Raw Queries: `Student`
+ * Endpoint: `/api/students`
+ * Additional CRUD-specific endpoint/handlers for the `Student` class
+ *
+ * These additional endpoints, namely, `PUT, DELETE`, currently do not have a 
+ * frontend counterpart, but can be used as helper tests for the frontend, 
+ * and can be adjusted should the spec require it in future feature implementations.
+ *
+ * @note Not attached to any validators or controllers
+ * @see models.student
+ * @file defines studentsApi
+ * @since 24/06/2021
+ */
+
 import {
   getAllStudentsByEmail,
-  getAllStudentsByTutorName,
 } from '../helpers/index';
 
 export function studentsApi(db, router) {
@@ -18,7 +32,7 @@ export function studentsApi(db, router) {
    * @method SELECT * FROM students WHERE username = <username>
    */
   router.post('/students', async function (req, res) {
-    const tutor = await req.body.tutor.split('@')[0];
+    const tutor = await req.body.tutor;
     const incomingStudents = await req.body.students;
     const currentStudents = await getAllStudentsByEmail();
     /**
@@ -26,33 +40,27 @@ export function studentsApi(db, router) {
      * return the result to the user with res.json
      */
     for (const incoming in incomingStudents) {
-      console.log('test', incoming);
-      const alias = incomingStudents[incoming].split('@')[0]; // temp
+      const email = incomingStudents[incoming];
       if (
         currentStudents.students.includes(incomingStudents[incoming])
       ) {
         await db.TutorStudent.create({
-          tutorName: tutor,
-          studentName: alias,
+          tutor: tutor,
+          email: email,
         });
       } else {
-        // await db.TutorStudent.sync();
         await db.Student.create({
-          email: incomingStudents[incoming],
-          username: alias,
+          email: email,
         });
-        // await db.Student.sync();
+
         await db.TutorStudent.create({
-          tutorName: tutor,
-          studentName: alias,
+          tutor: tutor,
+          email: email,
         });
-        // await db.TutorStudent.sync();
       }
     }
 
     await db.Student.sync();
-
-    // const { students } = await getAllStudentsByTutorName(tutor);
 
     res.json({
       tutor: tutor,
@@ -62,9 +70,9 @@ export function studentsApi(db, router) {
 
   /**
    * GET route for returning one Student record
-   * @method SELECT * FROM students WHERE username = <username>
+   * @method SELECT * FROM students WHERE email = <email>
    */
-  router.get('/students/:username', async (req, res) => {
+  router.get('/students/:email', async (req, res) => {
     /**
      * Add sequelize code to find a Student record where
      * the Student.username is equal to req.params.username.
@@ -72,7 +80,7 @@ export function studentsApi(db, router) {
      */
     db.Student.findOne({
       where: {
-        username: req.params.username,
+        email: req.params.email,
       },
     }).then(function (result) {
       res.json(result);
@@ -81,9 +89,9 @@ export function studentsApi(db, router) {
 
   /**
    * DELETE route for deleting Student records
-   * @method SELECT * FROM students WHERE username = <username>
+   * @method SELECT * FROM students WHERE email = <email>
    */
-  router.delete('/students/:username', function (req, res) {
+  router.delete('/students/:email', function (req, res) {
     /**
      * Add sequelize code to delete a Student record where
      * the Student.username is equal to req.params.username.
@@ -91,7 +99,7 @@ export function studentsApi(db, router) {
      */
     db.Student.destroy({
       where: {
-        username: req.params.username,
+        email: req.params.email,
       },
     }).then(function (result) {
       res.json(result);
@@ -116,7 +124,7 @@ export function studentsApi(db, router) {
       },
       {
         where: {
-          username: req.body.username,
+          email: req.body.email,
         },
       }
     ).then(function (result) {
