@@ -6,7 +6,6 @@
  */
 
 import * as db from '../models/index';
-const Op = require('Sequelize').Op;
 const { QueryTypes } = require('sequelize');
 
 /**

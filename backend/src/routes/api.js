@@ -6,10 +6,7 @@ import { studentsApi } from './student';
 import { tutorsApi } from './tutor';
 import { tutorStudentsApi } from './tutorstudent';
 import { notificationsApi } from './notification';
-import {
-  getAllStudentsByTutorName,
-  getAllStudentsByEmail,
-} from '../helpers/index';
+
 import * as apiController from '../controllers/api.controller';
 import * as apiValidator from '../controllers/api.validator';
 
