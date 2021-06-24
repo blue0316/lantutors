@@ -1,11 +1,13 @@
 require('@babel/register');
 const bodyParser = require('body-parser');
-const connection = require('../config/mysql');
+const connection = require('./config/mysql');
 
 const app = require('./app');
 
 const setUpExpress = () => {
   const port = process.env.PORT || 3000;
+
+  // DEV
 
   // const server = app.listen(port, () => {
   //   console.log(`App running on port ${port}`);
