@@ -1,5 +1,15 @@
-'use strict';
+/**
+ * Model: `StudentNotification`
+ * Explicit definition of `StudentNotification` many-to-many `through` table
+ * for `Tutor` and `Student` associations issued by a tutor's message
+ * @see api.controller.retrieveNotifications
+ * @see api.validator.retrieveNotifications
+ * @see services.RetrieveNotifications
+ * @file defines StudentNotification
+ */
+
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class StudentNotification extends Model {
     /**
@@ -7,30 +17,28 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
-    }
+    static associate(models) {}
   }
   StudentNotification.init(
     {
-      studentName: {
+      student: {
         type: DataTypes.STRING,
         onDelete: 'cascade',
         onUpdate: 'cascade',
         references: {
-          model: 'Student',
-          key: 'username',
-          as: 'studentName',
+          model: 'Students',
+          key: 'email',
+          as: 'student',
         },
       },
-      tutorName: {
+      tutor: {
         type: DataTypes.STRING,
         onDelete: 'cascade',
         onUpdate: 'cascade',
         references: {
-          model: 'Tutor',
-          key: 'username',
-          as: 'tutorName',
+          model: 'Tutors',
+          key: 'email',
+          as: 'tutor',
         },
       },
       title: {

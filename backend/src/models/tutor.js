@@ -1,6 +1,15 @@
-'use strict';
-import { compareSync, genSalt, hash } from 'bcryptjs';
+/**
+ * Model: `Tutor`
+ * Class definition of a `Tutor` model's attributes, fields, associations
+ * @see api.controller.registerTutor
+ * @see api.validator.registerTutor
+ * @see services.RegisterTutor
+ * @file defines Tutor
+ */
+
+import { genSalt, hash } from 'bcryptjs';
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Tutor extends Model {
     /**
@@ -9,36 +18,28 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       this.belongsToMany(models.Student, {
         through: 'StudentNotifications',
-        sourceKey: 'username',
-        targetKey: 'username',
-        foreignKey: 'tutorName',
+        sourceKey: 'email',
+        targetKey: 'email',
+        foreignKey: 'tutor',
         onUpdate: 'cascade',
         onDelete: 'cascade',
         hooks: true,
       });
       this.belongsToMany(models.Student, {
         through: 'TutorStudents',
-        sourceKey: 'username',
-        targetKey: 'username',
-        foreignKey: 'tutorName',
+        sourceKey: 'email',
+        targetKey: 'email',
+        foreignKey: 'tutor',
         onUpdate: 'cascade',
         onDelete: 'cascade',
         hooks: true,
       });
     }
-    checkPassword(encodedPassword, password) {
-      return compareSync(password, encodedPassword);
-    }
   }
   Tutor.init(
     {
-      username: {
-        type: DataTypes.STRING,
-        unique: true,
-      },
       email: {
         type: DataTypes.STRING,
         unique: true,
@@ -58,21 +59,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: 'Tutor',
+
       hooks: {
         beforeCreate: async (tutor, options) => {
           const salt = await genSalt();
           tutor.password = await hash(tutor.password, salt);
         },
-        afterCreate: async (tutor, options) => {
-          tutor.username = await tutor.email.split('@')[0];
-        },
-        beforeUpdate: async () => {
+        beforeUpdate: async (tutor, options) => {
           if (tutor.changed('password')) {
             const salt = await genSalt();
             tutor.password = await hash(tutor.password, salt);

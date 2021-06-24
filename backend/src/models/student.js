@@ -1,5 +1,14 @@
-'use strict';
+/**
+ * Model: `Student`
+ * Class definition of a `Student` model's attributes, fields, associations
+ * @see api.controller.registerStudents
+ * @see api.validator.registerStudents
+ * @see services.RegisterStudents
+ * @file defines Student
+ */
+
 const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Student extends Model {
     /**
@@ -10,18 +19,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsToMany(models.Tutor, {
         through: 'TutorStudents',
-        sourceKey: 'username',
-        targetKey: 'username',
-        foreignKey: 'studentName',
+        sourceKey: 'email',
+        targetKey: 'email',
+        foreignKey: 'student',
         onUpdate: 'cascade',
         onDelete: 'cascade',
         hooks: true,
       });
       this.belongsToMany(models.Tutor, {
         through: 'StudentNotifications',
-        sourceKey: 'username',
-        targetKey: 'username',
-        foreignKey: 'studentName',
+        sourceKey: 'email',
+        targetKey: 'email',
+        foreignKey: 'student',
         onUpdate: 'cascade',
         onDelete: 'cascade',
         hooks: true,
@@ -30,10 +39,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Student.init(
     {
-      username: {
-        type: DataTypes.STRING,
-        unique: true,
-      },
       email: {
         type: DataTypes.STRING,
         unique: true,
@@ -59,16 +64,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Student',
-      hooks: {
-        afterCreate: async (student, options) => {
-          student.username = await student.email.split('@')[0];
-        },
-        beforeUpdate: async () => {
-          if (student.changed('username')) {
-            student.username = await student.email.split('@')[0];
-          }
-        },
-      },
     }
   );
   return Student;
