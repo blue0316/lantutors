@@ -1,7 +1,14 @@
+/**
+ * Endpoint: `POST /api/register`
+ * Class definition of `POST` instance that allows a tutor to register students
+ * @see api.controller.registerStudents
+ * @see api.validator.registerStudents
+ * @file defines RegisterStudents
+ */
+
 import * as db from '../models/index';
-// import { Sequelize, Op } from 'sequelize';
-import { filter, findIndex, uniq } from 'lodash';
-const Op = require('Sequelize').Op;
+
+import { getAllStudentsByEmail } from '../helpers/index';
 class RegisterStudents {
   constructor(validatedArgs) {
     this.tutor = validatedArgs.tutor;
@@ -10,82 +17,77 @@ class RegisterStudents {
 
   async call() {
     /**
-     * Find the tutor's record from the request
+     * Identify the tutor from the database
      */
     const tutor = await db.Tutor.findOne({
       raw: true,
       where: { email: this.tutor },
     });
-
-    let unlistedStudents = [];
     /**
-     * Find existing students from the request
+     * Create a tutor record if the requester isn't registered
      */
-    let existingStudents = await db.Student.findAll({
-      raw: true,
-      where: db.sequelize.or({
-        email: { [Op.in]: this.students },
-      }),
-    });
-    /**
-     * Find new students from the request
-     */
-    const incomingStudents = filter(
-      this.students,
-      (email) =>
-        findIndex(
-          existingStudents,
-          (student) => student.email === email
-        ) === -1
-    );
-    /**
-     * If there are any new students...
-     */
-    if (incomingStudents.length > 0) {
-      const createNewStudents = incomingStudents.map((email) => {
-        return db.Student.create({ email }).then((result) =>
-          result.toJSON()
-        );
+    if (!tutor) {
+      db.Tutor.create({
+        email: this.tutor,
+        password: this.tutor.split('@')[0],
       });
-      /**
-       * Create a new student record for each
-       */
-      const newStudents = await Promise.all(createNewStudents);
-      /**
-       * Identify the previously unlisted students
-       */
-      unlistedStudents = unlistedStudents.concat(newStudents);
-      /**
-       * Add the newly registered students to the array of existing students
-       */
-      existingStudents = existingStudents.concat(newStudents);
     }
-    const { students } = await db.TutorStudent.findAll({}).then(
-      (results) => ({
-        students: results.map((result) => result),
-      })
-    );
+    /**
+     * Get a list of student emails from the request
+     */
+    const incomingStudents = this.students;
+    /**
+     * Get a list of all existing students
+     */
+    const currentStudents = await getAllStudentsByEmail();
+    /**
+     * Iterate through the request's students array
+     */
+    for (const incoming in incomingStudents) {
+      /**
+       * Identify one email from the array of students
+       */
+      const email = incomingStudents[incoming];
+      /**
+       * If there are already-registered students in the request...
+       */
+      if (
+        currentStudents.students.includes(incomingStudents[incoming])
+      ) {
+        /**
+         * Assign them to the requesting tutor
+         */
+        await db.TutorStudent.create({
+          tutor: this.tutor,
+          student: email,
+        });
+      } else {
+        /**
+         * All else are otherwise unregistered and unassigned
+         * So create a student record for those
+         */
+        await db.Student.create({
+          email: email,
+        });
+        /**
+         * And then assign them to the requesting tutor
+         */
+        await db.TutorStudent.create({
+          tutor: this.tutor,
+          student: email,
+        });
+      }
+    }
+
+    await db.Student.sync();
+    await db.TutorStudent.sync();
+
     return {
-      tutor: tutor,
-      students: {
-        new: unlistedStudents,
-        all: existingStudents,
-      },
+      tutor: this.tutor,
+      students: incomingStudents.map((student) => student),
+      message: 'Students Registered',
+      code: 200,
     };
-    // res.json({
-    //   tutor: tutor,
-    //   students: {
-    //     new: unlistedStudents,
-    //     all: existingStudents,
-    //   },
-    // });
-    // return {
-    //   tutor: tutor,
-    //   students: {
-    //     new: unlistedStudents,
-    //     all: existingStudents,
-    //   },
-    // };
   }
 }
 
