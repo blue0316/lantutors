@@ -2,9 +2,11 @@
   "name": "lantutors-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "private": true,
   "scripts": {
+    "worker": "node -r dotenv/config src/server.js dotenv_config_path=./.env",
+    "start": "node -r dotenv/config src/server.js dotenv_config_path=./.env",
     "dev": "nodemon -r dotenv/config src/server.js dotenv_config_path=./.env",
     "db:create": "npx sequelize-cli db:create",
     "db:migrate": "npx sequelize-cli db:migrate",
@@ -21,11 +23,14 @@
       "/node_modules/"
     ]
   },
+  "engines": {
+    "node": "15.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/israelias/lantutors.git"
   },
-  "author": "",
+  "author": "Joem Elias Sanez",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/israelias/lantutors/issues"
@@ -40,6 +45,7 @@
     "@babel/runtime": "^7.13.10",
     "babel-loader": "^8.2.2",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -47,10 +53,14 @@
     "factory-girl": "^5.0.4",
     "helmet": "^4.4.1",
     "joi": "^17.4.0",
+    "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.5.0",
     "sequelize-auto-migrations": "^1.0.3",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "tedious": "^11.0.9"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

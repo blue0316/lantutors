@@ -1,12 +1,19 @@
 require('@babel/register');
+const bodyParser = require('body-parser');
+const connection = require('../config/mysql');
+
 const app = require('./app');
 
 const setUpExpress = () => {
-  const port = process.env.APP_PORT || 3001;
+  const port = process.env.PORT || 3000;
 
-  const server = app.listen(port, () => {
-    console.log(`App running on port ${port}`);
-  });
+  // const server = app.listen(port, () => {
+  //   console.log(`App running on port ${port}`);
+  // });
+
+  // Port 8080 for Google App Engine
+  app.set('port', process.env.PORT || 3000);
+  app.listen(3000);
 
   // In case of an error
   app.on('error', (appErr, appCtx) => {

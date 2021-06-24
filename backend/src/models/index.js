@@ -9,6 +9,8 @@ const config = require(`${__dirname}/../config/config.js`)[env];
 
 const db = {};
 
+// DEV
+
 let sequelize;
 sequelize = new Sequelize(
   config.database,
@@ -16,6 +18,34 @@ sequelize = new Sequelize(
   config.password,
   { ...config, logging: false }
 );
+
+// let sequelize = new Sequelize(
+//   config.database,
+//   config.username,
+//   config.password
+//   {
+//     dialect: 'mysql',
+//     host: config.host,
+//     port: '3306',
+//     driver: 'tedious',
+//     logging: false,
+//     dialectOptions: {
+//       requestTimeout: 30000,
+//       encrypt: true,
+//     },
+//     define: {
+//       timestamps: false,
+//     },
+//     pool: {
+//       max: 5,
+//       min: 0,
+//       acquire: 30000,
+//       idle: 10000,
+//     },
+//   }
+// );
+
+// sequelize = new Sequelize(process.env.DATABASE_URL);
 
 fs.readdirSync(__dirname)
   .filter((file) => {
