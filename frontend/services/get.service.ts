@@ -9,36 +9,45 @@ import axios from 'axios';
  */
 
 /**
- * Api backend base URL DEVELOPMENT.
+ * Api backend base URL
+ * In development change to `http://127.0.0.1:4000/api`
  */
 const axiosConfig = {
-  baseURL: 'http://127.0.0.1:4000/api',
-  withCredentials: true,
+  baseURL: 'https://fsdisraelias.df.r.appspot.com/api',
+  // withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+  },
 };
 
 /**
  * Get search results data.
  *
- * SearchApi, `/api/getcommonstudents`
+ * SearchApi, `/api/commonstudents`
  * @param {string} tutor1
  * @param {string} tutor2
  * @param {string} tutor3
  * @param {number} page
  */
-function getResultsData(
-  tutor1: string,
-  tutor2: string,
-  tutor3: string,
-  page = 1
+export function getCommonStudentsBySearchParam(
+  params?: Array<string>
 ) {
-  const querystring = tutor1
-    ? `getcommonstudents?tutor=${tutor1}`
-    : tutor2
-    ? `getcommonstudents?tutor=${tutor1}&tutor=${tutor2}`
-    : tutor3
-    ? `getcommonstudents?tutor=${tutor1}&tutor=${tutor2}&tutor=${tutor3}`
-    : `getcommonstudents?tutor=`;
-  return axios.get(`/${querystring}&page=${page}`, axiosConfig);
+  /**
+   * New URLSearchParams object
+   */
+  let queries = '';
+  params && params.length > 0
+    ? params.forEach((param) => (queries += `&tutor=${param}`))
+    : '';
+  // const tutorParams = new URLSearchParams(queries)
+
+  // let queryParams = '';
+  // tutorParams.forEach(function (tutor, email) {
+  //   console.log(tutor, email);
+  //   queryParams += `&tutor=${email}`;
+  // });
+  return axios.get(`commonstudents?${queries}`, axiosConfig);
 }
 
 /**
@@ -46,17 +55,36 @@ function getResultsData(
  *
  * tutorStudentsApi, `/api/commonstudents`
  */
-function getCommonStudents() {
+export function getCommonStudents() {
   return axios.get(`commonstudents`, axiosConfig);
 }
 
 /**
- * Get one Tutor-Student association (commonstudents) as initial data.
+ * Get one students association (commonstudents) with `tutor`.
  *
  * tutorStudentsApi, `/api/commonstudents`
+ * @param {string} tutor database document `email` of tutor
  */
-function getCommonStudent(tutorName: string) {
-  return axios.get(`commonstudents/${tutorName}`, axiosConfig);
+export function getCommonStudentsByTutor(tutor: any) {
+  return axios.get(`commonstudents/${tutor}`, axiosConfig);
+}
+
+/**
+ * Get raw Tutor-Student associations (commonstudents) as initial data.
+ *
+ * tutorStudentsApi, `/api/alltutorstudents`
+ */
+export function getRawCommonStudents() {
+  return axios.get(`alltutorstudents`, axiosConfig);
+}
+
+/**
+ * Get all Student students as raw data.
+ *
+ * allstudentsapi, `/api/allstudents`
+ */
+export function getRawStudents() {
+  return axios.get(`allstudents`, axiosConfig);
 }
 
 /**
@@ -64,17 +92,17 @@ function getCommonStudent(tutorName: string) {
  *
  * studentsApi, `/api/students`
  */
-function getStudents() {
+export function getStudents() {
   return axios.get(`students`, axiosConfig);
 }
 
 /**
  * Get one student from the database.
  *
- * @param {string} username database document `username` of student
+ * @param {string} email database document `email` of student
  */
-function getStudent(username: any) {
-  return axios.get(`students/${username}`, axiosConfig);
+export function getStudent(email: any) {
+  return axios.get(`students/${email}`, axiosConfig);
 }
 
 /**
@@ -82,55 +110,33 @@ function getStudent(username: any) {
  *
  * tutorsApi, `/api/tutors`
  */
-function getTutors() {
+export function getTutors() {
   return axios.get(`tutors`, axiosConfig);
 }
 
 /**
  * Get one tutor from the database.
  *
- * @param {string} username database document `username` of student
+ * @param {string} email database document `email` of student
  */
-function getTutor(username: any) {
-  return axios.get(`tutors/${username}`, axiosConfig);
+export function getTutor(email: any) {
+  return axios.get(`tutors/${email}`, axiosConfig);
 }
 
 /**
  * Get all notifications data.
  *
- * tutorsApi, `/api/notifications`
+ * tutorsApi, `/api/allnotifications`
  */
-function getNotifications() {
-  return axios.get(`notifications`, axiosConfig);
+export function getNotifications() {
+  return axios.get(`allnotifications`, axiosConfig);
 }
 
 /**
  * Get one notification from the database.
  *
- * @param {string} tutorName database document `username` of tutor
+ * @param {string} tutor database document `email` of tutor
  */
-function getNotificationByTutor(tutorName: string) {
-  return axios.get(`notifications/${tutorName}`);
+export function getNotificationsByTutor(tutor: any) {
+  return axios.get(`notifications/${tutor}`, axiosConfig);
 }
-
-/**
- * Get one notification from the database.
- *
- * @param {string} id database document `id` of notification
- */
-function getNotificationById(id: number) {
-  return axios.get(`notifications/${id}`);
-}
-
-export {
-  getResultsData,
-  getCommonStudents,
-  getCommonStudent,
-  getStudents,
-  getStudent,
-  getTutors,
-  getTutor,
-  getNotifications,
-  getNotificationByTutor,
-  getNotificationById,
-};
