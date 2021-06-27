@@ -3,13 +3,11 @@ import React from 'react';
 import { Box, Container } from '@material-ui/core';
 import {
   getTutors,
-  getStudents,
   getCommonStudents,
   getRawCommonStudents,
-  getRawStudents,
   getCommonStudentsBySearchParam,
 } from '../services/get.service';
-import StudentsTable from '../components/studenttable';
+
 import CommonList from '../components/commonlist';
 import Layout from '../components/layouts/base.layout';
 import SubHeader from '../components/subheader';
