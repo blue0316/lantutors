@@ -1,20 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
-import { useRouter } from 'next/router';
 
-import Toast from '../components/toast';
-import { useTutor } from './tutor.context';
-import { reduceStudents } from '../utils/reducers';
-
-import { postRequest } from '../services/post.service';
-
-import {
-  getRawCommonStudents,
-  getCommonStudentsBySearchParam,
-  getStudent,
-  getStudents,
-  getRawStudents,
-} from '../services/get.service';
+import { getCommonStudentsBySearchParam } from '../services/get.service';
 
 /**
  * Fourth-level Context provider for all CRUD operations.
@@ -24,10 +11,8 @@ import {
  */
 
 type SelectedDataType = {
-  commonData: Student['email'][] | undefined;
-  setCommonData: React.Dispatch<
-    React.SetStateAction<Student['email'][] | undefined>
-  >;
+  commonData: string[];
+  setCommonData: React.Dispatch<React.SetStateAction<string[]>>;
   selectedData: {};
   setSelectedData: React.Dispatch<React.SetStateAction<{}>>;
   loading: boolean;
@@ -46,9 +31,7 @@ export function SelectedProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [commonData, setCommonData] = React.useState<
-    Student['email'][] | undefined
-  >(undefined!);
+  const [commonData, setCommonData] = React.useState<string[]>([]);
 
   const [selectedData, setSelectedData] = React.useState(new Map());
 
@@ -60,11 +43,7 @@ export function SelectedProvider({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     // mutate the current Map
-    selectedData.set(
-      event.target.name,
-      event.target.checked.toString()
-    );
-
+    selectedData.set(event.target.name, event.target.checked);
     setSelectedData(new Map(selectedData));
 
     // @ts-ignore
@@ -80,12 +59,13 @@ export function SelectedProvider({
     setLoading(true);
     const response = await getCommonStudentsBySearchParam(
       // @ts-ignore
-      params.map((data) => data.tutor !== 'false' && data.entry)
+      params.map((data) => data.tutor !== false && data.entry)
     );
-    console.log(response.data);
+
     if (response && response.data) {
       setLoading(false);
-      setCommonData(response.data);
+
+      setCommonData(response.data.students);
     }
   };
 
