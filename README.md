@@ -1,11 +1,11 @@
 # Lantutors
-Scholastic administrative app for educators, home-based tutors, and mentors to connect with students whose scholastic paths have been affected by the pandemic and can benefit from after-school or full-time tutoring.
+Scholastic administrative app for educators, home-based tutors, and mentors to connect with students that can benefit from after-school or full-time tutoring.
 The app's overwhelming long-term purpose and value is for registered tutors to perform administrative functions for on-campus or remote-based classes effectively and consistently.
 
 Please visit the project at [lantutuors.vercel.app](https://lantutors.vercel.app).
 
 
-Additionally, the restful backend API can be viwed at [appspot.com/api](https://fsdisraelias.df.r.appspot.com/api). For a sample response, please visit the [commonstudents](https://fsdisraelias.df.r.appspot.com/api/commonstudents) endpoint.
+Additionally, the restful backend API can be viwed at [appspot.com/api](https://fsdisraelias.df.r.appspot.com/). For a sample response, please visit the [commonstudents](https://fsdisraelias.df.r.appspot.com/api/commonstudents) endpoint.
 
 [Go to backend](https://github.com/israelias/lantutors/tree/master/backend)      
 
@@ -57,6 +57,13 @@ Additionally, the restful backend API can be viwed at [appspot.com/api](https://
 - [Git:](https://git-scm.com/) Git is used as the version control system and is utilized via the WebStorm terminal to `commit` to Git and `push` to GitHub.
 - [GitHub:](https://github.com/) GitHub is used to store the project's code and directory upon concurrent `push`es via Git.
 
+# Testing
+## User testing
+### TBD
+
+## Code testing
+  - ### [`cd backend`](https://github.com/israelias/lantutors/tree/master/backend)
+    Please visit the [backend](https://github.com/israelias/lantutors/tree/master/backend) root directory for details on running unit tests with `Joi/Express` validation and a pre-configured database `Factory`.
 ## Deployment
 
 - The project frontend is written in [Typescript]() developed with [React](https://reactjs.org/), bootstrapped with [NextJS](https://nextjs.org/) by using `npx create-next-app --typescript` and deployed with [Vercel](https://nextjs.org/docs/deployment). The backend is written in [Javascript](), developed with [ExpressJS]() to serve a restful MySQL database via [Sequelize-CLI]() hosted with [GoogleCloud SQL]() and deployed with [Google Cloud App Engine](). 
