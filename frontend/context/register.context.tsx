@@ -8,13 +8,24 @@ import { useTutor } from './tutor.context';
 import { postRequest } from '../services/post.service';
 
 /**
- * Context provider for Post notifications handler.
+ * Provider for registering students
  *
  */
 
-type NotificationType = {
-  notification: string;
-  setNotification: React.Dispatch<React.SetStateAction<string>>;
+const getEmailsFromMessage = (message: string) => {
+  const result = [];
+  const emailArray = message.match(
+    /@([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi
+  );
+  if (emailArray) {
+    result.push(...emailArray.map((email) => email.substr(1)));
+  }
+  return result;
+};
+
+type RegisterType = {
+  students: string;
+  setStudents: React.Dispatch<React.SetStateAction<string>>;
   submitting: boolean;
   setSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmit: (
@@ -23,18 +34,16 @@ type NotificationType = {
   handleCancel: () => void;
 };
 
-const NotificationContext = React.createContext<NotificationType>(
-  undefined!
-);
+const RegisterContext = React.createContext<RegisterType>(undefined!);
 
-export function NotificationProvider({
+export function RegisterProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const { email } = useTutor();
   const router = useRouter();
-  const [notification, setNotification] = React.useState<string>('');
+  const [students, setStudents] = React.useState<string>('');
 
   const [submitting, setSubmitting] = React.useState<boolean>(false);
 
@@ -71,7 +80,7 @@ export function NotificationProvider({
 
   const handleCancel = () => {
     router.back();
-    setNotification('');
+    setStudents('');
   };
 
   const handleSubmit = async (
@@ -81,11 +90,11 @@ export function NotificationProvider({
     setSubmitting(true);
     try {
       await postRequest({
-        url: `api/retrievenotifications`,
+        url: `api/register`,
 
         body: {
           tutor: email,
-          notification,
+          students: students.split(', '),
         },
       }).then((response) => {
         if (response.ok) {
@@ -93,17 +102,17 @@ export function NotificationProvider({
             if (data.message) {
               setTimeout(() => {
                 onSuccess(
-                  `Notification sent. Recipients: ${data.recipients}`
+                  `${data.message}. Registered ${data.students} to ${data.tutor}`
                 );
               }, 750);
               setTimeout(() => {
                 setSubmitting(false);
-                setNotification('');
-                router.push({ pathname: `/notifications` });
+                setStudents('');
+                router.push({ pathname: `/home` });
               }, 900);
             } else {
               setSubmitting(false);
-              onError(`Notification post failed: ${data?.message}`);
+              onError(`${data?.message}`);
             }
           });
         } else {
@@ -125,10 +134,10 @@ export function NotificationProvider({
   };
 
   return (
-    <NotificationContext.Provider
+    <RegisterContext.Provider
       value={{
-        notification,
-        setNotification,
+        students,
+        setStudents,
         submitting,
         setSubmitting,
         handleCancel,
@@ -154,9 +163,8 @@ export function NotificationProvider({
         error
         message={message}
       />
-    </NotificationContext.Provider>
+    </RegisterContext.Provider>
   );
 }
 
-export const useNotification = () =>
-  React.useContext(NotificationContext);
+export const useRegister = () => React.useContext(RegisterContext);

@@ -4,10 +4,8 @@ import React from 'react';
 import { getCommonStudentsBySearchParam } from '../services/get.service';
 
 /**
- * Fourth-level Context provider for all CRUD operations.
- * Creating, Editing, Deleting user's own collections and snippets.
+ * Provider for sorting Common Tutors
  *
- * @since 2021-04-08
  */
 
 type SelectedDataType = {

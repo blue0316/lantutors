@@ -8,7 +8,7 @@ import { storage } from '../utils/storage';
 import { signInRequest } from '../services/auth.service';
 
 /**
- * Top-most Context provider for all user authentication: form values, auth errors etc.
+ * Authentication provider for tutor records.
  *
  */
 
