@@ -19,7 +19,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const tutors = await getTutors();
   return {
     props: {
-      notifications: reduceNotifications(notifications.data),
+      notifications: reduceNotifications(
+        notifications.data.sort(
+          // @ts-ignore
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )
+      ),
     },
   };
 };
