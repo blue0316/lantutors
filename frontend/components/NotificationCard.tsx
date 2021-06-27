@@ -156,9 +156,6 @@ const NotificationCard = ({
                 size="small"
                 color="primary"
                 onClick={() => {
-                  // setEditing(true);
-                  // setId(listing.id);
-                  // setHeading(`Editing ${listing.title}`);
                   router.push({
                     pathname: `/notify`,
                   });
