@@ -34,7 +34,7 @@ If you dont have MYSQL, you can run a local db server via Docker using something
 ```
 
 ### Register your students
-#### ***Live Endpoint***: [fsdisraelias.df.r.appspot.com/api/register](https://fsdisraelias.df.r.appspot.com/register)
+#### ***Live Endpoint***: [appspot.com/api/register](https://fsdisraelias.df.r.appspot.com/api/register)
 #### `api/register`: POST
 
 * Request body example
@@ -65,7 +65,7 @@ If you dont have MYSQL, you can run a local db server via Docker using something
 
 
 ### Post a Notification 
-#### ***Live Endpoint***: [fsdisraelias.df.r.appspot.com/api/retrievenotifications](https://fsdisraelias.df.r.appspot.com/retrievenotifications)
+#### ***Live Endpoint***: [appspot.com/api/retrievenotifications](https://fsdisraelias.df.r.appspot.com/api/retrievenotifications)
 #### `api/retrievenotifications`: POST
 * Request body example 
 * In this example, `@studentann` and `@studentmary` are already registered students via `api/register` by another tutor. 
@@ -90,7 +90,7 @@ If you dont have MYSQL, you can run a local db server via Docker using something
         "studentholt@gmail.com",
         "studentjohn@gmail.com",
         "studentcommon@gmail.com",
-        "studentshared@gmail.com
+        "studentshared@gmail.com"
     ],
     "message": "Notification posted",
     "code": 200
@@ -99,7 +99,7 @@ If you dont have MYSQL, you can run a local db server via Docker using something
 >>> BUG: Currently, mentioning a student twice returns that student's email twice in `recipients`. This does ***not***, however, duplicate that student's record.
 
 ### Suspend or Unsuspend a Student 
-#### ***Live Endpoint***: [fsdisraelias.df.r.appspot.com/api/suspend](https://fsdisraelias.df.r.appspot.com/suspend)
+#### ***Live Endpoint***: [appspot.com/api/suspend](https://fsdisraelias.df.r.appspot.com/api/suspend)
 #### `api/suspend`: POST 
 * Request body example  (Toggles the `suspended` field for `student`)
 
@@ -137,7 +137,7 @@ If you dont have MYSQL, you can run a local db server via Docker using something
 
 
 ### Get Students common to Tutor(s)
-#### ***Live Endpoint***: [fsdisraelias.df.r.appspot.com/api/commonstudents](https://fsdisraelias.df.r.appspot.com/commonstudents)
+#### ***Live Endpoint***: [appspot.com/api/commonstudents](https://fsdisraelias.df.r.appspot.com/api/commonstudents)
 #### `api/commonstudents?`: GET
 * If using Postman, ensure that the body is empyty.
 
@@ -148,7 +148,7 @@ If you dont have MYSQL, you can run a local db server via Docker using something
 {
     "students": [
         "studentann@gmail.com",
-        "studentmary@gmail.com".
+        "studentmary@gmail.com",
         "studentholt@gmail.com",
         "studentjohn@gmail.com",
         "studentanother@gmail.com",
@@ -158,7 +158,7 @@ If you dont have MYSQL, you can run a local db server via Docker using something
 }
 ```
 
-#### ***Live Endpoint***: [fsdisraelias.df.r.appspot.com/api/commonstudents?tutor=isabel@isabel.com](https://fsdisraelias.df.r.appspot.com/commonstudents?tutor=isabel@isabel.com) (with existing tutor `isabel` record params)
+#### ***Live Endpoint***: [appspot.com/api/commonstudents?tutor=isabel@isabel.com](https://fsdisraelias.df.r.appspot.com/api/commonstudents?tutor=isabel@isabel.com) (with existing tutor `isabel` record params)
 #### `api/commonstudents?tutor=tutorken@gmail.com`: GET
 * If using Postman, ensure that the body is empyty.
 
@@ -176,7 +176,7 @@ If you dont have MYSQL, you can run a local db server via Docker using something
 }
 ```
 
-#### ***Live Endpoint***: [fsdisraelias.df.r.appspot.com/api/commonstudents?tutor=john@john.com](https://fsdisraelias.df.r.appspot.com/commonstudents?tutor=john@john.com) (with existing tutor `john` record params)
+#### ***Live Endpoint***: [appspot.com/api/commonstudents?tutor=john@john.com](https://fsdisraelias.df.r.appspot.com/api/commonstudents?tutor=john@john.com) (with existing tutor `john` record params)
 #### `api/commonstudents?tutor=tutoranother@gmail.com`: GET
 * If using Postman, ensure that the body is empyty.
 
@@ -191,7 +191,7 @@ If you dont have MYSQL, you can run a local db server via Docker using something
 }
 ```
 
-#### ***Live Endpoint***: [fsdisraelias.df.r.appspot.com/api/commonstudents?tutor=john@john.com&tutor=isabel@isabel.com](https://fsdisraelias.df.r.appspot.com/commonstudents?tutor=john@john.com&isabel@isabel.com) (with existing tutor `isabel` and `john` record params)
+#### ***Live Endpoint***: [appspot.com/api/commonstudents?tutor=john@john.com&tutor=isabel@isabel.com](https://fsdisraelias.df.r.appspot.com/api/commonstudents?tutor=john@john.com&tutor=isabel@isabel.com) (with existing tutor `isabel` and `john` record params)
 #### `api/commonstudents?tutor=tutorken@gmail.com&tutor=tutoranother@gmail.com`: GET
 * If using Postman, ensure that the body is empyty.
 
@@ -207,6 +207,178 @@ If you dont have MYSQL, you can run a local db server via Docker using something
     ]
 }
 ```
+
+### Get all Students
+#### ***Live Endpoint***: [appspot.com/api/allstudents](https://fsdisraelias.df.r.appspot.com/api/allstudents)
+#### `api/allstudents`: GET
+* If using Postman, ensure that the body is empyty.
+
+* Returns all raw student records
+``` json
+[
+  {
+    "id": 1,
+    "email": "email@email.com",
+    "suspended": false,
+    "createdAt": "2021-06-25T07:58:37.000Z",
+    "updatedAt": "2021-06-26T13:35:55.000Z"
+  },
+  {...students}
+]
+```
+
+#### ***Live Endpoint***: [appspot.com/api/students](https://fsdisraelias.df.r.appspot.com/api/students)
+#### `api/students`: GET
+* If using Postman, ensure that the body is empyty.
+
+* Returns all registered student emails
+``` json
+[
+  {
+     "students": [
+        "kate@kate.com",
+        "chris@chris.com",
+        "noah@noah.com",
+        "elias@elias.com",
+    ]
+  }
+
+]
+```
+
+### Get one Student
+#### ***Live Endpoint***: [appspot.com/api/elias@elias.com](https://fsdisraelias.df.r.appspot.com/api/students/elias@elias.com)
+#### `api/students/email@email.com`: GET
+* If using Postman, ensure that the body is empyty.
+
+* Returns one raw student record
+``` json
+ {
+    "id": 1,
+    "email": "email@email.com",
+    "suspended": false,
+    "createdAt": "2021-06-25T07:58:37.000Z",
+    "updatedAt": "2021-06-26T13:35:55.000Z"
+  }
+```
+
+
+### Get all Tutors
+#### ***Live Endpoint***: [appspot.com/api/tutors](https://fsdisraelias.df.r.appspot.com/api/tutors)
+#### `api/tutors`: GET
+* If using Postman, ensure that the body is empyty.
+
+* Returns all raw tutor records
+``` json
+[
+  {
+    "id": 1,
+    "email": "tutor@tutor.com",
+    "password": "$2a$10$TH0sytl7DCVXIhVTF0kgJ.IffcOTAnGtTiZgNU9BLQ0KLE1JsXFh2",
+    "createdAt": "2021-06-25T07:58:37.000Z",
+    "updatedAt": "2021-06-26T13:35:55.000Z"
+  },
+  {...tutors}
+]
+```
+
+### Get one Tutor
+#### ***Live Endpoint***: [appspot.com/api/tutors/john@john.com](https://fsdisraelias.df.r.appspot.com/api/tutors/john@john.com)
+#### `api/tutors/email@email.com`: GET
+* If using Postman, ensure that the body is empyty.
+
+* Returns one raw student record
+``` json
+ {
+    "id": 1,
+    "email": "tutor@tutor.com",
+    "password": "$2a$10$TH0sytl7DCVXIhVTF0kgJ.IffcOTAnGtTiZgNU9BLQ0KLE1JsXFh2",
+    "createdAt": "2021-06-25T07:58:37.000Z",
+    "updatedAt": "2021-06-26T13:35:55.000Z"
+  }
+```
+
+
+### Get all Notifications
+#### ***Live Endpoint***: [appspot.com/api/allnotifications](https://fsdisraelias.df.r.appspot.com/api/allnotifications)
+#### `api/allnotifications`: GET
+* If using Postman, ensure that the body is empyty.
+
+* Returns all raw `Tutor-Student-Notification` association records
+``` json
+[
+    {
+        "id": 1,
+        "student": "kevin@kevin.com",
+        "tutor": "alfred@alred.com",
+        "title": "[Tutor alfred]: Fri Jun 25 2021 08:04:58 GMT+0000 (Coordinated Universal Time)",
+        "message": "Great to meet everyone and see you all on our site visit next Friday. Reminding @kevin@kevin.com @kate@kate.com and @joem@joem.com to bring their registration forms.",
+        "createdAt": "2021-06-25T08:04:58.000Z",
+        "updatedAt": "2021-06-25T08:04:58.000Z",
+    },
+    { ...notifications}
+]
+```
+
+### Get all Notifications by Tutor
+#### ***Live Endpoint***: [appspot.com/api/notifications/john@john.com](https://fsdisraelias.df.r.appspot.com/api/notifications/john@john.com)
+#### `api/notifications/tutor@email.com`: GET
+* If using Postman, ensure that the body is empyty.
+
+* Returns all raw `Tutor-Student-Notification` association records issued by `tutor`
+``` json
+[
+     {
+        "id": 13,
+        "student": "kate@kate.com",
+        "tutor": "john@john.com",
+        "title": "[Tutor john]: Fri Jun 25 2021 08:09:31 GMT+0000 (Coordinated Universal Time)",
+        "message": "See you guys next week!",
+        "createdAt": "2021-06-25T08:09:31.000Z",
+        "updatedAt": "2021-06-25T08:09:31.000Z"
+    },
+    { ...notificationsFromJohn}
+]
+```
+
+
+### Get all Tutor-Student associations
+#### ***Live Endpoint***: [appspot.com/api/alltutorstudents](https://fsdisraelias.df.r.appspot.com/api/alltutorstudents)
+#### `api/alltutorstudents`: GET
+* If using Postman, ensure that the body is empyty.
+
+* Returns all raw `Tutor-Student` association records
+``` json
+[
+      {
+        "id": 1,
+        "tutor": "alfred@alfred.com",
+        "student": "kate@kate.com",
+        "active": true,
+        "createdAt": "2021-06-25T07:58:38.000Z",
+        "updatedAt": "2021-06-25T07:58:38.000Z"
+    },
+    { ...tutorStudents}
+]
+```
+
+### Get all Tutor-Student associations by Tutor
+#### ***Live Endpoint***: [appspot.com/api/commonstudents/john@john.com](https://fsdisraelias.df.r.appspot.com/api/commonstudents/john@john.com)
+#### `api/commonstudents/tutor@email.com`: GET
+* If using Postman, ensure that the body is empyty.
+
+* Returns a reduced object of tutor email and students' emails via `Tutor-Student` associations where students are assigned to the tutor in the web argument.
+``` json
+{
+    "tutor": "john@john.com",
+    "students": [
+        "kate@kate.com",
+        "kevin@kevin.com",
+        "joem@joem.com"
+    ]
+}
+```
+
 
 ## 🚀 How to run locally
 
