@@ -43,29 +43,7 @@ export function getCommonStudentsBySearchParam(
   params && params.length > 0
     ? params.forEach((param) => (queries += `&tutor=${param}`))
     : '';
-
-  // const makeQueries = (q: Array<string>) => {
-  //   let queries = '';
-  //   p && p.length > 0
-  //     ? p.forEach((p) => (queries += `&tutor=${p}`))
-  //     : '';
-  //   return queries
-  // }
-  // const tutorParams = new URLSearchParams(queries)
-
-  // let queryParams = '';
-  // tutorParams.forEach(function (tutor, email) {
-  //   console.log(tutor, email);
-  //   queryParams += `&tutor=${email}`;
-  // });
-  return axios.get(
-    `commonstudents?${
-      params && params.length > 0
-        ? params.forEach((param) => (queries += `&tutor=${param}`))
-        : ''
-    }`,
-    axiosConfig
-  );
+  return axios.get(`commonstudents?${queries}`, axiosConfig);
 }
 
 /**
