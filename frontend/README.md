@@ -1,20 +1,65 @@
+[Back to root](https://github.com/israelias/lantutors#contents)\
+[Go to backend](https://github.com/israelias/lantutors/tree/master/backend)
+
 # Lantutors Front-End
 
 This is a really simple project that shows the usage of Next.js with TypeScript.
 
-## Preview
 
-Preview the example live on [StackBlitz](http://stackblitz.com/):
+## Frameworks and Libraries
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-typescript)
+- [Node.js:](https://nodejs.org/en/) The runtime environment that allows the app to run asynchronous server-side scripts and events.(Bootstrapped with Nextjs)
+- [Webpack:](https://webpack.js.org/) The static module bundler that builds a dependency graph mapping every module the project requires. (Bootstrapped with Nextjs)
+- [Typescript]()
+- [React 17.0:](https://reactjs.org/) JavaScript Library for building user interfaces.
+- [Material-UI](https://material-ui.com/) React component for faster and easier web development.
+- [React-Feather:](https://feathericons.com/?query=mai)
+- [Axios:](https://github.com/axios/axios) The promise-based HTTP client for the browser and node.js that handles `get` requests to backend API.
+- [isomorphic-unfetch]() `unfetch` Fetcher that handles `post` requests to the backend API.
+- [clsx:](https://developer.aliyun.com/mirror/npm/package/clsx):Tiny utility for constructing classnames conditionally
 
-## Deploy your own
+## Frontend Deployment
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+- `commit` and `push` the code from local IDE to Github via Git.
+- Log in to Vercel and click the [New Project](https://vercel.com/new) CTA.
+- Access "Import Git Repository" via the `select` input, located at the top-left of the immediate prompt.
+- Click "Import" on the repository named `lantutors`
+- Select the default `Personal Account`
+- Select the `frontend` sub-directory.
+- Click `Deploy`
+- Barring errors, await the prompt for:
+  > ##### "Your project has been successfully deployed."
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript&project-name=with-typescript&repository-name=with-typescript)
+## Available Scripts
 
-## How to use it?
+In the project directory, you can run:
+
+### `yarn start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+### `yarn test`
+
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `yarn build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `yarn eject`
+
+## Additional Documentation on Executing the Repo with Next and TypeScript
 
 Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
 

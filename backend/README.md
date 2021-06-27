@@ -1,7 +1,8 @@
+[Back to root](https://github.com/israelias/lantutors#contents)  
+[Go to frontend](https://github.com/israelias/lantutors/tree/master/backend)
 # Lantutors Back-End
 
-The backend api is currently deployed at [fsdisraelias.df.r.appspot.com/api](https://fsdisraelias.df.r.appspot.com/) via GoogleCloud App Engine. The database is also served via GCloud's Cloud SQL on a personal account.
-
+The restful API is deployed at [appspot.com](https://fsdisraelias.df.r.appspot.com/) via GoogleCloud App Engine. The database is also served via GCloud's Cloud SQL on a personal account.
 ## Development Requirements
 
 Postman:
@@ -379,8 +380,21 @@ If you dont have MYSQL, you can run a local db server via Docker using something
 }
 ```
 
+## Frameworks and Libraries
+- [ExpressJS:](https://expressjs.com/) 
+- [Sequelize:](https://sequelize.org/) 
+- [NextJS:](https://nextjs.org/) 
+- [Axios](https://github.com/axios/axios) 
+- [Joi](https://joi.dev/api/?v=17.4.0) via [Express-Validation](https://github.com/AndrewKeig/express-validation)
+- [Factory-Girl](https://github.com/simonexmachina/factory-girl)
+- [Faker](https://github.com/fzaninotto/Faker)
 
-## 🚀 How to run locally
+## Resources
+- [GCloud Deployment](https://cloud.google.com/appengine)
+- [GCloud SQL](https://cloud.google.com/sql)
+
+
+## Running Locally and Available Scripts
 
 1. **Clone the repo and go inside the folder.**
 
