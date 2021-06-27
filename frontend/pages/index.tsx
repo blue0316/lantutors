@@ -37,7 +37,7 @@ const IndexPage = ({ tutors }: { tutors: Tutor[] }) => {
         >
           <Container maxWidth="sm">
             <form id="register" onSubmit={handleSignIn}>
-              <Box sx={{ mb: 3 }}>
+              <Box sx={{ mb: 3, pt: 3 }}>
                 <Typography color="textPrimary" variant="h2">
                   Welcome to Lantutors
                 </Typography>
