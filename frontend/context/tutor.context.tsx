@@ -139,13 +139,13 @@ export function TutorProvider({
     };
   }, []);
 
-  // React.useEffect(() => {
-  //   if (!(email || loggedIn)) {
-  //     storage.clearUserLocal();
-  //     storage.setLogoutEvent();
-  //     router.push('/');
-  //   }
-  // }, [email, loggedIn]);
+  React.useEffect(() => {
+    if (!(email || loggedIn)) {
+      storage.clearUserLocal();
+      storage.setLogoutEvent();
+      router.push('/');
+    }
+  }, [email, loggedIn]);
 
   return (
     <TutorContext.Provider
