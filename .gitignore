@@ -1,6 +1,7 @@
 node_modules
 .env
 .env.test
+.env.local
 access.log
 package-lock.json
 yarn.lock
