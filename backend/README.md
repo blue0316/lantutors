@@ -1,5 +1,5 @@
 [Back to root](https://github.com/israelias/lantutors#contents)  
-[Go to frontend](https://github.com/israelias/lantutors/tree/master/backend)
+[Go to frontend](https://github.com/israelias/lantutors/tree/master/frontend)
 # Lantutors Back-End
 
 The restful API is deployed at [appspot.com](https://fsdisraelias.df.r.appspot.com/) via GoogleCloud App Engine. The database is also served via GCloud's Cloud SQL on a personal account.
