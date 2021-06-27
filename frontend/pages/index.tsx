@@ -33,6 +33,7 @@ const IndexPage = ({ tutors }: { tutors: Tutor[] }) => {
             flexDirection: 'column',
             height: '100%',
             justifyContent: 'center',
+            pt: 8,
           }}
         >
           <Container maxWidth="sm">
