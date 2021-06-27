@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Pagination } from '@material-ui/core';
-import Layout from '../layout';
+import Layout from '../layouts/base.layout';
 import NotificationCard from '../notificationcard';
 import MainLayout from '../layouts/main.layout';
 

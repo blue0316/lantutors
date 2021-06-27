@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import Toast from '../components/Toast';
+import Toast from '../components/toast';
 import { useTutor } from './tutor.context';
 import { reduceStudents } from '../utils/reducers';
 
@@ -23,14 +24,15 @@ import {
  */
 
 type SelectedDataType = {
-  commonData: Student[] | undefined;
+  commonData: Student['email'][] | undefined;
   setCommonData: React.Dispatch<
-    React.SetStateAction<Student[] | undefined>
+    React.SetStateAction<Student['email'][] | undefined>
   >;
   selectedData: {};
   setSelectedData: React.Dispatch<React.SetStateAction<{}>>;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  params: never[];
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loadCommonStudents: () => Promise<void>;
 };
@@ -45,7 +47,7 @@ export function SelectedProvider({
   children: React.ReactNode;
 }) {
   const [commonData, setCommonData] = React.useState<
-    Student[] | undefined
+    Student['email'][] | undefined
   >(undefined!);
 
   const [selectedData, setSelectedData] = React.useState(new Map());
@@ -66,9 +68,9 @@ export function SelectedProvider({
     setSelectedData(new Map(selectedData));
 
     // @ts-ignore
-    let arr = [];
+    const arr = [];
     selectedData.forEach((key, entry) =>
-      arr.push({ tutor: key, entry: entry })
+      arr.push({ tutor: key, entry })
     );
     // @ts-ignore
     setParams(arr);
@@ -77,6 +79,7 @@ export function SelectedProvider({
   const loadCommonStudents = async () => {
     setLoading(true);
     const response = await getCommonStudentsBySearchParam(
+      // @ts-ignore
       params.map((data) => data.tutor !== 'false' && data.entry)
     );
     console.log(response.data);
@@ -101,6 +104,7 @@ export function SelectedProvider({
         setLoading,
         loadCommonStudents,
         handleChange,
+        params,
       }}
     >
       {children}

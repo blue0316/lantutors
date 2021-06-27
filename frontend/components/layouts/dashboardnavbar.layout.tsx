@@ -16,8 +16,6 @@ import {
 } from 'react-feather';
 
 import Logo from '../shared/logo';
-import TutorLogo from '../shared/tutorlogo';
-import NavItem from '../shared/navitem';
 
 const DashboardNavbar = ({
   onMobileNavOpen,

@@ -1,16 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import Toast from '../components/Toast';
+import Toast from '../components/toast';
 import { useTutor } from './tutor.context';
 
 import { postRequest } from '../services/post.service';
-
-import {
-  getRawCommonStudents,
-  getStudent,
-  getStudents,
-} from '../services/get.service';
 
 /**
  * Fourth-level Context provider for all CRUD operations.

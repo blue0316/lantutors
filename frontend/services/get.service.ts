@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable no-return-assign */
 import axios from 'axios';
 /**
  * Get requests for tutors, students, tutorstudents and notifications endpoints.
@@ -40,6 +43,14 @@ export function getCommonStudentsBySearchParam(
   params && params.length > 0
     ? params.forEach((param) => (queries += `&tutor=${param}`))
     : '';
+
+  // const makeQueries = (q: Array<string>) => {
+  //   let queries = '';
+  //   p && p.length > 0
+  //     ? p.forEach((p) => (queries += `&tutor=${p}`))
+  //     : '';
+  //   return queries
+  // }
   // const tutorParams = new URLSearchParams(queries)
 
   // let queryParams = '';
@@ -47,7 +58,14 @@ export function getCommonStudentsBySearchParam(
   //   console.log(tutor, email);
   //   queryParams += `&tutor=${email}`;
   // });
-  return axios.get(`commonstudents?${queries}`, axiosConfig);
+  return axios.get(
+    `commonstudents?${
+      params && params.length > 0
+        ? params.forEach((param) => (queries += `&tutor=${param}`))
+        : ''
+    }`,
+    axiosConfig
+  );
 }
 
 /**

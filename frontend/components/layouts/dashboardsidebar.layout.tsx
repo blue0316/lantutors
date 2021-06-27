@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   Drawer,
   List,
@@ -13,10 +12,8 @@ import {
 } from '@material-ui/core';
 import {
   Home as HomeIcon,
-  Plus as AddIcon,
   AtSign as NotificationsIcon,
   User as UserIcon,
-  UserPlus as UserPlusIcon,
   Users as Students,
   Send,
 } from 'react-feather';
@@ -65,7 +62,7 @@ const DashboardSidebar = ({
   const lgUp = useMediaQuery('(min-width:900px)');
   const lgDown = useMediaQuery('(max-width:898px)');
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }

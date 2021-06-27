@@ -8,7 +8,7 @@ import {
 } from '../../services/get.service';
 import StudentsTable from '../../components/studenttable';
 
-import Layout from '../../components/layout';
+import Layout from '../../components/layouts/base.layout';
 import DashboardLayout from '../../components/layouts/dashboard.layout';
 
 type Props = {

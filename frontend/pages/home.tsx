@@ -1,33 +1,28 @@
-import Layout from '../components/Layout';
-import CommonCard from '../components/CommonCard';
-import { CommonStudents, Tutor } from '../interfaces';
+import TutorStudentPage from '../components/tutorstudent/page.tutorstudent';
+
+import { reduceStudents } from '../utils/reducers';
 import {
-  getCommonStudents,
+  getRawCommonStudents,
   getTutors,
 } from '../services/get.service';
 
-type Props = {
-  commonStudents: CommonStudents[];
+const Home = ({
+  commonStudents,
+  tutors,
+}: {
+  commonStudents: CommonStudentsApi[];
   tutors: Tutor[];
-};
-
-const Home = ({ commonStudents, tutors }: Props) => {
-  return (
-    <Layout title="RingsListings: All Listings" tutors={tutors}>
-      <main>
-        <CommonCard commonStudents={commonStudents} />
-      </main>
-    </Layout>
-  );
-};
+}) => (
+  <TutorStudentPage commonStudents={commonStudents} tutors={tutors} />
+);
 
 export async function getServerSideProps() {
   const allTutors = await getTutors();
-  const allCommon = await getCommonStudents();
+  const allCommon = await getRawCommonStudents();
 
   return {
     props: {
-      commonStudents: allCommon.data,
+      commonStudents: reduceStudents(allCommon.data),
       tutors: allTutors.data,
     },
   };

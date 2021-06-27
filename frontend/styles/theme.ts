@@ -1,15 +1,7 @@
 import { createTheme } from '@material-ui/core/styles';
 import { colors } from '@material-ui/core';
 
-// Create a theme instance.
 const theme = createTheme({
-  // MuiCssBaseline: {
-  //   styleOverrides: {
-  //     '@global': {
-
-  //     }
-  //   },
-  // },
   palette: {
     background: {
       default: '#F4F6F8',

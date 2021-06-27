@@ -5,17 +5,13 @@ import {
   Button,
   Container,
   Grid,
-  Link,
   TextField,
   Typography,
 } from '@material-ui/core';
 
-import Layout from '../components/Layout';
+import Layout from '../components/layouts/base.layout';
 
-import {
-  getCommonStudents,
-  getTutors,
-} from '../services/get.service';
+import { getTutors } from '../services/get.service';
 import { useNotification } from '../context/notification.context';
 
 const NotifyPage = ({ tutors }: { tutors: Tutor[] }) => {
@@ -26,7 +22,7 @@ const NotifyPage = ({ tutors }: { tutors: Tutor[] }) => {
     handleSubmit,
   } = useNotification();
   return (
-    <Layout tutors={tutors}>
+    <Layout>
       <Box
         sx={{
           backgroundColor: 'background.default',
@@ -97,7 +93,6 @@ const NotifyPage = ({ tutors }: { tutors: Tutor[] }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const allTutors = await getTutors();
-
   return {
     props: {
       tutors: allTutors.data,

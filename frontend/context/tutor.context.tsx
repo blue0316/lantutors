@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 import * as React from 'react';
 import { useRouter } from 'next/router';
 
-import Toast from '../components/Toast';
+import Toast from '../components/toast';
 import { storage } from '../utils/storage';
 import { signInRequest } from '../services/auth.service';
 

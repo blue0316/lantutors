@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import Toast from '../components/Toast';
+import Toast from '../components/toast';
 
 import { postRequest } from '../services/post.service';
 
@@ -57,6 +59,15 @@ export function StudentsProvider({
 
   const [message, setMessage] = React.useState<string | any>('');
   const [loading, setLoading] = React.useState<boolean>(false);
+
+  const loadStudents = async () => {
+    setLoading(true);
+    const response = await getRawStudents();
+    if (response && response.data) {
+      setLoading(false);
+      setStudentsData(response.data);
+    }
+  };
 
   const router = useRouter();
   const onSuccess = (text: string | any) => {
@@ -128,17 +139,8 @@ export function StudentsProvider({
     }
   };
 
-  const loadStudents = async () => {
-    setLoading(true);
-    const response = await getRawStudents();
-    if (response && response.data) {
-      setLoading(false);
-      setStudentsData(response.data);
-    }
-  };
-
   React.useEffect(() => {
-    if (suspendedStudent != '') {
+    if (suspendedStudent !== '') {
       console.log(suspendedStudent);
       handleSuspend();
     }

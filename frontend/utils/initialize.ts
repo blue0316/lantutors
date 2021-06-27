@@ -18,5 +18,5 @@ export const firstInitial = (email: string) => {
 
 export const randomColor = () => {
   const hex = Math.floor(Math.random() * 0xffffff);
-  return '#' + hex.toString(16);
+  return `#${hex.toString(16)}`;
 };

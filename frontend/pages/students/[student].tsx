@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 
-import Layout from '../../components/layout';
+import Layout from '../../components/layouts/base.layout';
 
 import StudentCardPage from '../../components/student/page.student';
 

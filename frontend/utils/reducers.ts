@@ -1,4 +1,5 @@
-/* eslint-disable no-implicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 
 type Props = {
   tutor: string;

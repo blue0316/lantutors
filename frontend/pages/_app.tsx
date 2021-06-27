@@ -1,8 +1,8 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import { ThemeProvider, Theme } from '@material-ui/core/styles';
-import GlobalStyles from '../styles/global.style';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import GlobalStyles from '../styles/global.style';
 import theme from '../styles/theme';
 import { TutorProvider } from '../context/tutor.context';
 import { NotificationProvider } from '../context/notification.context';
@@ -26,7 +26,7 @@ export default function MyApp(props: AppProps) {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         <TutorProvider>
@@ -41,6 +41,6 @@ export default function MyApp(props: AppProps) {
           </StudentsProvider>
         </TutorProvider>
       </ThemeProvider>
-    </React.Fragment>
+    </>
   );
 }

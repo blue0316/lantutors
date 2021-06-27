@@ -1,15 +1,13 @@
-import Link from 'next/link';
 import {
   Box,
   Button,
-  Checkbox,
   Container,
   TextField,
   Typography,
 } from '@material-ui/core';
 
 import MainLayout from '../components/layouts/main.layout';
-import Layout from '../components/Layout';
+import Layout from '../components/layouts/base.layout';
 
 import { getTutors } from '../services/get.service';
 
@@ -27,7 +25,7 @@ const IndexPage = ({ tutors }: { tutors: Tutor[] }) => {
 
   return (
     <MainLayout>
-      <Layout title="Lantutors: Sign In" tutors={tutors}>
+      <Layout title="Lantutors: Sign In">
         <Box
           sx={{
             backgroundColor: 'background.default',
