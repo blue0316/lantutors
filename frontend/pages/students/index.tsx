@@ -1,47 +1,56 @@
-import { GetStaticProps } from 'next';
-import Link from 'next/link';
+import { Box, Container } from '@material-ui/core';
+import {
+  getTutors,
+  getStudents,
+  getCommonStudents,
+  getRawCommonStudents,
+  getRawStudents,
+} from '../../services/get.service';
+import StudentsTable from '../../components/studenttable';
 
-import { Tutor, Student } from '../../interfaces';
-
-import Layout from '../../components/Layout';
-import List from '../../components/List';
-
-import { getTutors, getStudents } from '../../services/get.service';
+import Layout from '../../components/layout';
+import DashboardLayout from '../../components/layouts/dashboard.layout';
 
 type Props = {
-  students: {
-    id: Student['id'];
-    studentName: Student['username'];
-  }[];
   tutors: Tutor[];
+  students: Student[];
 };
-
-const WithStaticProps = ({ students, tutors }: Props) => (
-  <Layout title="Lantutors: All Students" tutors={tutors}>
-    <h1>Students List</h1>
-    <p>You are currently on: /users</p>
-    <List students={students} />
-    <p>
-      <Link href="/">
-        <a>Go home</a>
-      </Link>
-    </p>
-  </Layout>
+const StudentsPage = ({ tutors, students }: Props) => (
+  <DashboardLayout>
+    <Layout title="Lantutors: All Students">
+      <>
+        <Box
+          sx={{
+            backgroundColor: 'background.default',
+            minHeight: '100%',
+            py: 3,
+          }}
+        >
+          <Container maxWidth={false}>
+            <Box sx={{ pt: 3 }}>
+              <StudentsTable students={students} />
+            </Box>
+          </Container>
+        </Box>
+      </>
+    </Layout>
+  </DashboardLayout>
 );
 
-export const getStaticProps: GetStaticProps = async () => {
-  // Example for including static props in a Next.js function component page.
-  // Don't forget to include the respective types for any props passed into
-  // the component.
+export async function getServerSideProps() {
+  const allTutors = await getTutors();
+  const allCommon = await getCommonStudents();
+  const rawCommon = await getRawCommonStudents();
+  const students = await getRawStudents();
 
-  const students = await getStudents();
-  const tutors = await getTutors();
   return {
     props: {
-      tutors: tutors.data,
-      students: students.data.students,
+      commonStudents: allCommon.data,
+      rawCommonStudents: rawCommon.data,
+      tutors: allTutors.data,
+      students: students.data,
     },
   };
-};
+}
 
-export default WithStaticProps;
+export default StudentsPage;
