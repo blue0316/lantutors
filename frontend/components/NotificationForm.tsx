@@ -93,11 +93,6 @@ const NotificationForm = () => {
                 defaultValue="Default Value"
                 variant="outlined"
                 fullWidth
-                // value={values.amount}
-                // onChange={handleChange('amount')}
-                // startAdornment={
-                //   <InputAdornment position="start">$</InputAdornment>
-                // }
               />
             </FormControl>
           </div>
