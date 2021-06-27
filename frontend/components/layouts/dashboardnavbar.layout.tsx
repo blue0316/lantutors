@@ -14,6 +14,7 @@ import {
   AtSign as NotificationsIcon,
   Users as Students,
   Send,
+  PlusCircle as Register,
 } from 'react-feather';
 
 import { randomColor } from '../../utils/initialize';
@@ -69,6 +70,12 @@ const DashboardNavbar = ({
             <Link href="/notify">
               <Box sx={{ cursor: 'pointer' }}>
                 <Send />
+              </Box>
+            </Link>
+            <Box sx={{ flexGrow: 0.2 }} />
+            <Link href="/register">
+              <Box sx={{ cursor: 'pointer' }}>
+                <Register />
               </Box>
             </Link>
             <Box sx={{ flexGrow: 0.2 }} />

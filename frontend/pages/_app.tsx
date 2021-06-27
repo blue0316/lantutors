@@ -8,7 +8,7 @@ import { TutorProvider } from '../context/tutor.context';
 import { NotificationProvider } from '../context/notification.context';
 import { StudentsProvider } from '../context/students.context';
 import { SelectedProvider } from '../context/selected.context';
-// import '../styles/globals.css';
+import { RegisterProvider } from '../context/register.context';
 
 declare module '@material-ui/styles' {
   interface DefaultTheme extends Theme {}
@@ -33,9 +33,11 @@ export default function MyApp(props: AppProps) {
           <StudentsProvider>
             <SelectedProvider>
               <NotificationProvider>
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline />
-                <Component {...pageProps} />
+                <RegisterProvider>
+                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                  <CssBaseline />
+                  <Component {...pageProps} />
+                </RegisterProvider>
               </NotificationProvider>
             </SelectedProvider>
           </StudentsProvider>

@@ -19,6 +19,7 @@ import {
   Users as Students,
   UserPlus as CommonStudents,
   Send,
+  PlusCircle as Register,
 } from 'react-feather';
 
 import { useTutor } from '../../context/tutor.context';
@@ -93,6 +94,11 @@ export const items = [
     href: '/notify',
     icon: <Send />,
     title: 'Post',
+  },
+  {
+    href: '/register',
+    icon: <Register />,
+    title: 'Register Students',
   },
   {
     href: '/commonstudents',
