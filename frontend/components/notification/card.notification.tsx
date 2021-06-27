@@ -8,7 +8,6 @@ import {
   Divider,
   Grid,
   Typography,
-  Button,
   AvatarGroup,
 } from '@material-ui/core';
 import {
@@ -19,7 +18,7 @@ import {
 import { makeStyles } from '@material-ui/styles';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { AtSign } from 'react-feather';
-import { useRouter } from 'next/router';
+
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 
@@ -57,7 +56,6 @@ const NotificationCard = ({
 }: {
   notification: NotificationResponse;
 }) => {
-  const router = useRouter();
   const classes = useStyles();
   const { email } = useTutor();
 

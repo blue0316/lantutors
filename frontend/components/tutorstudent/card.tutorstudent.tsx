@@ -11,29 +11,15 @@ import {
   Divider,
   Grid,
   Typography,
-  Button,
-  AvatarGroup,
-  SvgIcon,
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/styles';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
-import {
-  Home as HomeIcon,
-  Plus as AddIcon,
-  AtSign as NotificationsIcon,
-  User as UserIcon,
-  UserPlus as UserPlusIcon,
-  Users as Students,
-} from 'react-feather';
-import CommonList from '../commonlist';
+import { User as UserIcon, Users as Students } from 'react-feather';
+import TutorStudentList from './list.tutorstudent';
 
-import {
-  initialize,
-  capitalize,
-  randomColor,
-} from '../../utils/initialize';
+import { initialize, randomColor } from '../../utils/initialize';
 
 import { useTutor } from '../../context/tutor.context';
 
@@ -74,9 +60,6 @@ const TutorStudentCard = ({
 }: {
   commonStudent: CommonStudentsApi;
 }) => {
-  const classes = useStyles();
-  const router = useRouter();
-
   const { email } = useTutor();
   return (
     <Card
@@ -110,7 +93,7 @@ const TutorStudentCard = ({
             }}
           />
         </Box>
-        <CommonList students={commonStudent.students} />
+        <TutorStudentList students={commonStudent.students} />
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
       <Divider />

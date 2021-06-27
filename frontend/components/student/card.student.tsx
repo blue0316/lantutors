@@ -25,15 +25,6 @@ import { useStudents } from '../../context/students.context';
 
 dayjs.extend(relativeTime);
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
-  timezone: 'GTM-7',
-};
-
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
@@ -69,14 +60,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 const StudentCard = ({ student }: { student: Student }) => {
-  const {
-    handleSuspend,
-    suspendedStudent,
-    setSuspendedStudent,
-    studentsData,
-    loadStudents,
-    suspending,
-  } = useStudents();
+  const { setSuspendedStudent, suspending } = useStudents();
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);

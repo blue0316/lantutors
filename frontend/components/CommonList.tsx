@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) =>
     root: {
       width: '100%',
       maxWidth: 360,
-      // backgroundColor: theme.palette.background.paper,
     },
   })
 );
@@ -75,7 +74,9 @@ const CommonList = ({
             <ListItemSecondaryAction>
               <Checkbox
                 edge="end"
+                // @ts-ignore
                 onChange={handleToggle(student)}
+                // @ts-ignore
                 checked={checked.indexOf(student) !== -1}
                 inputProps={{ 'aria-labelledby': localId }}
               />

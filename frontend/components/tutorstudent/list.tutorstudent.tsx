@@ -13,7 +13,6 @@ import {
   initialize,
   capitalize,
   randomColor,
-  firstInitial,
 } from '../../utils/initialize';
 
 const useStyles = makeStyles((theme) =>

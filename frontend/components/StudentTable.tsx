@@ -1,41 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { Avatar, Box, Card, Button, Fab } from '@material-ui/core';
-import { getStudent } from '../services/get.service';
-import {
-  DataGrid,
-  GridColDef,
-  GridValueGetterParams,
-  GridRowId,
-  GridCellParams,
-  GridComparatorFn,
-  GridCellValue,
-  GridSortCellParams,
-  GridApi,
-} from '@material-ui/data-grid';
+import { Avatar, Box, Card } from '@material-ui/core';
+import { DataGrid, GridCellParams } from '@material-ui/data-grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import CheckIcon from '@material-ui/icons/Check';
-import SaveIcon from '@material-ui/icons/Save';
 
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
+
+import { initialize } from '../utils/initialize';
+import { useStudents } from '../context/students.context';
+
 dayjs.extend(relativeTime);
 
-import clsx from 'clsx';
-
-import { randomColor } from '../utils/initialize';
-import { useStudents } from '../context/students.context';
-import { useSelected } from '../context/selected.context';
-import { initialize } from '../utils/initialize';
-
-const StudentsTable = ({
-  students,
-  tutors,
-}: {
-  students: Student[];
-  tutors?: Tutor[];
-}) => {
+const StudentsTable = ({ students }: { students: Student[] }) => {
   const {
     handleSuspend,
     suspendedStudent,
@@ -48,16 +26,6 @@ const StudentsTable = ({
 
   const [data, setData] = React.useState<Student[]>(students);
 
-  const getStudentSuspendedStatus = async (
-    params: GridValueGetterParams
-  ) => {
-    const email = params.getValue(params.id, 'email');
-    const response = await getStudent(email);
-    if (response && response.data) {
-      return response.data.suspended;
-    }
-  };
-
   React.useEffect(() => {
     if (studentsData) {
       setData(studentsData);
@@ -69,13 +37,13 @@ const StudentsTable = ({
       <>
         <Box sx={{ height: 900, width: '100%' }}>
           <DataGrid
-            rows={data.map((data) => ({
-              id: data.id,
-              username: initialize(data.email),
-              email: data.email,
-              suspended: data.suspended,
-              updatedAt: dayjs(data.updatedAt).fromNow(),
-              createdAt: dayjs(data.createdAt).fromNow(),
+            rows={data.map((d) => ({
+              id: d.id,
+              username: initialize(d.email),
+              email: d.email,
+              suspended: d.suspended,
+              updatedAt: dayjs(d.updatedAt).fromNow(),
+              createdAt: dayjs(d.createdAt).fromNow(),
             }))}
             columns={[
               { field: 'id', headerName: 'ID', width: 70 },
@@ -152,6 +120,7 @@ const StudentsTable = ({
                       <a>
                         @
                         {
+                          // @ts-ignore
                           params
                             .getValue(params.id, 'email')
                             .toString()

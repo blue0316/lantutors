@@ -12,23 +12,12 @@ import {
   Grid,
   Typography,
   Button,
-  AvatarGroup,
-  SvgIcon,
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/styles';
 
-import CommonList from './CommonList';
-
-import {
-  initialize,
-  capitalize,
-  randomColor,
-} from '../utils/initialize';
-
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
-dayjs.extend(relativeTime);
 
 import {
   Home as HomeIcon,
@@ -38,8 +27,16 @@ import {
   UserPlus as UserPlusIcon,
   Users as Students,
 } from 'react-feather';
+import {
+  initialize,
+  capitalize,
+  randomColor,
+} from '../utils/initialize';
+import CommonList from './commonlist';
 
 import { useTutor } from '../context/tutor.context';
+
+dayjs.extend(relativeTime);
 
 const useStyles = makeStyles((theme: Theme) => ({
   icon: {
@@ -112,15 +109,9 @@ const CommonCard = ({
             style={{
               backgroundColor: randomColor(),
             }}
-          >
-            {/* {capitalize(commonStudent.student)} */}
-          </Avatar>
+          />
         </Box>
         <CommonList students={commonStudent.students} />
-
-        {/* <Typography align="left" color="textPrimary" variant="body2">
-          {notification.message}
-        </Typography> */}
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
       <Divider />

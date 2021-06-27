@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import Link from 'next/link';
+
 import { Container, Box, Grid, Pagination } from '@material-ui/core';
 
 import Layout from '../layout';
@@ -7,12 +7,6 @@ import DashBoardLayout from '../layouts/dashboard.layout';
 
 import TutorStudentList from './list.tutorstudent';
 import SubHeader from '../subheader';
-
-import {
-  getTutors,
-  getCommonStudentsByTutor,
-  getStudents,
-} from '../../services/get.service';
 
 type Props = {
   tutorStudent: CommonStudentsApi;

@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
 
-import Logo from './Logo';
+import Logo from './logo';
 
 import { initialize, firstInitial } from '../../utils/initialize';
 

@@ -21,9 +21,8 @@ import {
   Send,
 } from 'react-feather';
 
-import NavItem from '../shared/NavItem';
-import Logo from '../shared/Logo';
-import TutorLogo from '../shared/TutorLogo';
+import NavItem from '../shared/navitem';
+
 import { useTutor } from '../../context/tutor.context';
 
 export const items = [

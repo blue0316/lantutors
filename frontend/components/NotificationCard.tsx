@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import {
   Avatar,
   Box,
@@ -19,24 +20,17 @@ import { makeStyles } from '@material-ui/styles';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { useRouter } from 'next/router';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import dayjs from 'dayjs';
 import { useTutor } from '../context/tutor.context';
 
 import {
   initialize,
   capitalize,
-  firstInitial,
+  randomColor,
 } from '../utils/initialize';
 
-import relativeTime from 'dayjs/plugin/relativeTime';
-import dayjs from 'dayjs';
 dayjs.extend(relativeTime);
-
-function randomColor() {
-  let hex = Math.floor(Math.random() * 0xffffff);
-  let color = '#' + hex.toString(16);
-
-  return color;
-}
 
 const useStyles = makeStyles((theme) => ({
   sizeAvatar: {
@@ -84,19 +78,28 @@ const NotificationCard = ({
             pb: 3,
           }}
         >
-          <Typography
-            align="center"
-            color="textPrimary"
-            gutterBottom
-            variant="h4"
+          <Link
+            href={`/notifications/${encodeURIComponent(
+              notification.tutor
+            )}`}
           >
-            Tutor {initialize(notification.tutor)}
-          </Typography>
+            <a>
+              <Typography
+                align="center"
+                color="textPrimary"
+                gutterBottom
+                variant="h4"
+              >
+                Tutor {initialize(notification.tutor)}
+              </Typography>
+            </a>
+          </Link>
 
           {notification.recipients.length > 0 && (
             <AvatarGroup max={3} className={classes.sizeAvatar}>
               {notification.recipients.map((student) => (
                 <Avatar
+                  key={`avatar-${student}`}
                   style={{
                     backgroundColor: randomColor(),
                   }}
@@ -157,7 +160,7 @@ const NotificationCard = ({
                   // setId(listing.id);
                   // setHeading(`Editing ${listing.title}`);
                   router.push({
-                    pathname: `/notificcation`,
+                    pathname: `/notify`,
                   });
                 }}
               >

@@ -1,8 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
 import { useRouter } from 'next/router';
-// import useLocation from 'next/router'
 
 import { Button, ListItem } from '@material-ui/core';
 
@@ -37,7 +34,6 @@ const NavItem = ({
           py: 1.25,
           textTransform: 'none',
           width: '100%',
-          // color: 'primary.main',
           '& svg': {
             mr: 1,
           },

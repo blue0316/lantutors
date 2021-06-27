@@ -1,12 +1,10 @@
 import Link from 'next/link';
 import {
   AppBar,
-  Badge,
   Box,
   IconButton,
   Toolbar,
   useMediaQuery,
-  Typography,
 } from '@material-ui/core';
 
 import MenuIcon from '@material-ui/icons/Menu';
@@ -14,13 +12,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {
   AtSign as NotificationsIcon,
   Users as Students,
-  Plus as AddIcon,
   Send,
 } from 'react-feather';
 
-import Logo from '../shared/Logo';
-import TutorLogo from '../shared/TutorLogo';
-import NavItem from '../shared/NavItem';
+import Logo from '../shared/logo';
+import TutorLogo from '../shared/tutorlogo';
+import NavItem from '../shared/navitem';
 
 const DashboardNavbar = ({
   onMobileNavOpen,
