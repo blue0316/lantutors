@@ -55,15 +55,21 @@ const DashboardNavbar = ({
         {lgUp && (
           <>
             <Link href="/students">
-              <Students />
+              <Box sx={{ cursor: 'pointer' }}>
+                <Students />
+              </Box>
             </Link>
             <Box sx={{ flexGrow: 0.2 }} />
             <Link href="/notifications">
-              <NotificationsIcon />
+              <Box sx={{ cursor: 'pointer' }}>
+                <NotificationsIcon />
+              </Box>
             </Link>
             <Box sx={{ flexGrow: 0.2 }} />
             <Link href="/notify">
-              <Send />
+              <Box sx={{ cursor: 'pointer' }}>
+                <Send />
+              </Box>
             </Link>
             <Box sx={{ flexGrow: 0.2 }} />
             <IconButton color="inherit" onClick={onMobileNavOpen}>

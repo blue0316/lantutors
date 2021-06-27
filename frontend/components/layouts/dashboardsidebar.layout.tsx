@@ -17,11 +17,16 @@ import {
   AtSign as NotificationsIcon,
   User as UserIcon,
   Users as Students,
+  UserPlus as CommonStudents,
   Send,
 } from 'react-feather';
 
 import { useTutor } from '../../context/tutor.context';
-import { initialize } from '../../utils/initialize';
+import {
+  initialize,
+  capitalize,
+  randomColor,
+} from '../../utils/initialize';
 
 const NavItem = ({
   href,
@@ -47,6 +52,7 @@ const NavItem = ({
     >
       <Button
         sx={{
+          cursor: 'pointer',
           color: 'text.secondary',
           fontWeight: 'medium',
           justifyContent: 'flex-start',
@@ -89,7 +95,12 @@ export const items = [
     title: 'Post',
   },
   {
-    href: '/login',
+    href: '/commonstudents',
+    icon: <CommonStudents />,
+    title: 'Common Students (beta)',
+  },
+  {
+    href: '/',
     title: 'Login',
     icon: <UserIcon />,
   },
@@ -129,18 +140,35 @@ const DashboardSidebar = ({
           p: 2,
         }}
       >
-        <Link href="/home">
-          <a>
-            <Avatar
-              src={initialize(email)}
-              sx={{
-                cursor: 'pointer',
-                width: 64,
-                height: 64,
-              }}
-            />
-          </a>
-        </Link>
+        {email ? (
+          <Link href="/home">
+            <a>
+              <Avatar
+                style={{ backgroundColor: randomColor() }}
+                sx={{
+                  cursor: 'pointer',
+                  width: 64,
+                  height: 64,
+                }}
+              >
+                {capitalize(email)}
+              </Avatar>
+            </a>
+          </Link>
+        ) : (
+          <Link href="/home">
+            <a>
+              <Avatar
+                style={{ backgroundColor: randomColor() }}
+                sx={{
+                  cursor: 'pointer',
+                  width: 64,
+                  height: 64,
+                }}
+              />
+            </a>
+          </Link>
+        )}
 
         <Typography color="textPrimary" variant="h5">
           {email}
