@@ -1,10 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import {
+  AppBar,
+  Avatar,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
 
-import Logo from './logo';
-
-import { initialize, firstInitial } from '../../utils/initialize';
+import { initialize, randomColor } from '../../utils/initialize';
 
 import { useTutor } from '../../context/tutor.context';
 
@@ -16,7 +19,13 @@ const MainNavbar = ({ props }: { props?: React.ReactNode }) => {
       <Toolbar sx={{ height: 64 }}>
         <Link href="/">
           <a>
-            <Logo />
+            <Avatar
+              style={{
+                backgroundColor: randomColor(),
+              }}
+            >
+              LT
+            </Avatar>
           </a>
         </Link>
         {loggedIn && (

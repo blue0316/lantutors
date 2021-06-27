@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {
   AppBar,
+  Avatar,
   Box,
   IconButton,
   Toolbar,
@@ -15,7 +16,7 @@ import {
   Send,
 } from 'react-feather';
 
-import Logo from '../shared/logo';
+import { randomColor } from '../../utils/initialize';
 
 const DashboardNavbar = ({
   onMobileNavOpen,
@@ -41,7 +42,13 @@ const DashboardNavbar = ({
     <AppBar elevation={0}>
       <Toolbar>
         <Link href="/">
-          <Logo />
+          <Avatar
+            style={{
+              backgroundColor: randomColor(),
+            }}
+          >
+            LT
+          </Avatar>
         </Link>
         <Box sx={{ flexGrow: 1 }} />
 
