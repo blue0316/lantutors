@@ -62,7 +62,9 @@ export function getCommonStudents() {
  * @param {string} tutor database document `email` of tutor
  */
 export function getCommonStudentsByTutor(tutor: any) {
-  return axios.get(`commonstudents/${tutor}`, axiosConfig);
+  return axios
+    .get(`commonstudents/${tutor}`, axiosConfig)
+    .then((data) => data);
 }
 
 /**
