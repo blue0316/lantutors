@@ -4,9 +4,11 @@ import { useRouter } from 'next/router';
 import {
   Avatar,
   Box,
+  Button,
   Divider,
   Drawer,
   List,
+  ListItem,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
@@ -18,9 +20,52 @@ import {
   Send,
 } from 'react-feather';
 
-import NavItem from '../shared/navitem';
-
 import { useTutor } from '../../context/tutor.context';
+import { initialize } from '../../utils/initialize';
+
+const NavItem = ({
+  href,
+  icon,
+  title,
+  ...children
+}: {
+  href: string;
+  title: string;
+  icon: React.ReactNode;
+  children?: React.ReactNode;
+}) => {
+  const router = useRouter();
+
+  return (
+    <ListItem
+      disableGutters
+      sx={{
+        display: 'flex',
+        py: 0,
+      }}
+      {...children}
+    >
+      <Button
+        sx={{
+          color: 'text.secondary',
+          fontWeight: 'medium',
+          justifyContent: 'flex-start',
+          letterSpacing: 0,
+          py: 1.25,
+          textTransform: 'none',
+          width: '100%',
+          '& svg': {
+            mr: 1,
+          },
+        }}
+        onClick={() => router.push({ pathname: href })}
+      >
+        {icon && icon}
+        <span>{title}</span>
+      </Button>
+    </ListItem>
+  );
+};
 
 export const items = [
   {
@@ -87,7 +132,7 @@ const DashboardSidebar = ({
         <Link href="/home">
           <a>
             <Avatar
-              src={email.split('@')[0]}
+              src={initialize(email)}
               sx={{
                 cursor: 'pointer',
                 width: 64,
@@ -101,7 +146,7 @@ const DashboardSidebar = ({
           {email}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          Tutor {email.split('@')[0]}
+          Tutor {initialize(email)}
         </Typography>
       </Box>
       <Divider />

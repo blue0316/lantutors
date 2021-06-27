@@ -1,6 +1,6 @@
 import React from 'react';
 import { experimentalStyled } from '@material-ui/core';
-import MainNavbar from '../shared/mainnavbar';
+import MainNavbar from './navigation.layout';
 
 /**
  * @tutorial 'https://github.com/devias-io/material-kit-react/blob/main/src/components/MainLayout.js
