@@ -8,12 +8,11 @@ import {
 } from '../../services/get.service';
 
 type Props = {
-  tutorStudent: CommonStudentsApi;
-  tutors: Tutor[];
+  tutorStudents: CommonStudentsApi;
 };
 
-const TutorStudentsListsPage = ({ tutorStudent, tutors }: Props) => (
-  <TutorStudentListPage tutorStudent={tutorStudent} tutors={tutors} />
+const TutorStudentsListsPage = ({ tutorStudents }: Props) => (
+  <TutorStudentListPage tutorStudent={tutorStudents} />
 );
 
 export const getServerSideProps: GetServerSideProps = async ({

@@ -50,41 +50,44 @@ const TutorStudentList = ({
 
   return (
     <List dense className={classes.root}>
-      {students.map((student) => {
-        const localId = `common-${initialize(student)}`;
-        return (
-          <ListItem
-            key={student}
-            button
-            onClick={() => {
-              router.push({
-                pathname: `/students/${encodeURIComponent(student)}`,
-              });
-            }}
-          >
-            <ListItemAvatar>
-              <Avatar
-                style={{
-                  backgroundColor: randomColor(),
-                }}
-              >
-                {capitalize(student)}
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText id={student} primary={student} />
-            <ListItemSecondaryAction>
-              <Checkbox
-                edge="end"
-                // @ts-ignore
-                onChange={handleToggle(student)}
-                // @ts-ignore
-                checked={checked.indexOf(student) !== -1}
-                inputProps={{ 'aria-labelledby': localId }}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
-        );
-      })}
+      {students &&
+        students.map((student) => {
+          const localId = `common-${initialize(student)}`;
+          return (
+            <ListItem
+              key={student}
+              button
+              onClick={() => {
+                router.push({
+                  pathname: `/students/${encodeURIComponent(
+                    student
+                  )}`,
+                });
+              }}
+            >
+              <ListItemAvatar>
+                <Avatar
+                  style={{
+                    backgroundColor: randomColor(),
+                  }}
+                >
+                  {capitalize(student)}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText id={student} primary={student} />
+              <ListItemSecondaryAction>
+                <Checkbox
+                  edge="end"
+                  // @ts-ignore
+                  onChange={handleToggle(student)}
+                  // @ts-ignore
+                  checked={checked.indexOf(student) !== -1}
+                  inputProps={{ 'aria-labelledby': localId }}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        })}
     </List>
   );
 };

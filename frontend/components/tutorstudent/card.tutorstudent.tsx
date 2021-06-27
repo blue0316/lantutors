@@ -97,7 +97,7 @@ const TutorStudentCard = ({
           >
             <View />
             <Link
-              href={`/tutorstudent/${encodeURIComponent(
+              href={`/tutors/${encodeURIComponent(
                 commonStudent.tutor
               )}`}
             >
@@ -108,7 +108,7 @@ const TutorStudentCard = ({
                   cursor: 'pointer',
                 }}
               >
-                {email ? (
+                {email === commonStudent.tutor ? (
                   <Typography
                     color="textSecondary"
                     display="inline"
