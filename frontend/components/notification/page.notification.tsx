@@ -1,14 +1,15 @@
-import { Box, Container, Grid, Pagination } from '@material-ui/core';
+import Router from 'next/router';
+import { Box, Button, Container, Grid } from '@material-ui/core';
 import Layout from '../layouts/base.layout';
-import NotificationCard from '../notificationcard';
-import MainLayout from '../layouts/main.layout';
+import NotificationCard from './card.notification';
+import DashboardLayout from '../layouts/main.layout';
 
 const NotificationPage = ({
   notifications,
 }: {
   notifications: NotificationResponse[];
 }) => (
-  <MainLayout>
+  <DashboardLayout>
     <Layout title="Lantutors: All Notifications">
       <Box
         sx={{
@@ -41,12 +42,12 @@ const NotificationPage = ({
               pt: 3,
             }}
           >
-            <Pagination color="primary" count={3} size="small" />
+            <Button onClick={() => Router.back()}>Go Back</Button>
           </Box>
         </Container>
       </Box>
     </Layout>
-  </MainLayout>
+  </DashboardLayout>
 );
 
 export default NotificationPage;

@@ -1,8 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
-
-import { Theme } from '@material-ui/core/styles';
 import {
   Avatar,
   Box,
@@ -12,48 +9,15 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-
-import { makeStyles } from '@material-ui/styles';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import { User as UserIcon, Users as Students } from 'react-feather';
+
 import TutorStudentList from './list.tutorstudent';
-
 import { initialize, randomColor } from '../../utils/initialize';
-
 import { useTutor } from '../../context/tutor.context';
 
 dayjs.extend(relativeTime);
-
-const useStyles = makeStyles((theme: Theme) => ({
-  icon: {
-    marginRight: '16px',
-  },
-  heroContent: {
-    padding: '48px 0px 36px',
-  },
-  heroButtons: {
-    marginTop: '30px',
-  },
-  cardGrid: {
-    paddingTop: '48px',
-    paddingBottom: '48px',
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  footer: {
-    padding: '48px',
-  },
-}));
 
 const TutorStudentCard = ({
   commonStudent,

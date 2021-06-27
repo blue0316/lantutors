@@ -1,13 +1,15 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { createStyles, makeStyles } from '@material-ui/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Checkbox from '@material-ui/core/Checkbox';
-import Avatar from '@material-ui/core/Avatar';
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  ListItemAvatar,
+  Checkbox,
+} from '@material-ui/core';
 
 import {
   initialize,

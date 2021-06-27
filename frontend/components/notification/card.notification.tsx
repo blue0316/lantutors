@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/styles';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import { AtSign } from 'react-feather';
+import { AtSign, Send } from 'react-feather';
 
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
@@ -81,16 +81,40 @@ const NotificationCard = ({
               notification.tutor
             )}`}
           >
-            <a>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                cursor: 'pointer',
+              }}
+            >
               <Typography
-                align="center"
+                align="left"
                 color="textPrimary"
                 gutterBottom
                 variant="h4"
               >
                 Tutor {initialize(notification.tutor)}
               </Typography>
-            </a>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexGrow: 1,
+                }}
+              >
+                <AtSign />
+                <Typography
+                  color="textSecondary"
+                  display="inline"
+                  sx={{ pl: 1 }}
+                  variant="body2"
+                >
+                  View Notifications from Tutor{' '}
+                  {initialize(notification.tutor)}
+                </Typography>
+              </Box>
+            </Box>
           </Link>
 
           {notification.recipients.length > 0 && (
@@ -150,26 +174,29 @@ const NotificationCard = ({
             }}
           >
             <AtSign color="action" />
+
             <Link href="/notify">
-              {email ? (
-                <Typography
-                  color="textSecondary"
-                  display="inline"
-                  sx={{ pl: 1 }}
-                  variant="body2"
-                >
-                  @Post to to your students
-                </Typography>
-              ) : (
-                <Typography
-                  color="textSecondary"
-                  display="inline"
-                  sx={{ pl: 1 }}
-                  variant="body2"
-                >
-                  @Post to this group
-                </Typography>
-              )}
+              <Box sx={{ cursor: 'pointer' }}>
+                {email === notification.tutor ? (
+                  <Typography
+                    color="textSecondary"
+                    display="inline"
+                    sx={{ pl: 1 }}
+                    variant="body2"
+                  >
+                    @Post to to your students
+                  </Typography>
+                ) : (
+                  <Typography
+                    color="textSecondary"
+                    display="inline"
+                    sx={{ pl: 1 }}
+                    variant="body2"
+                  >
+                    @Post to this group
+                  </Typography>
+                )}
+              </Box>
             </Link>
           </Grid>
         </Grid>

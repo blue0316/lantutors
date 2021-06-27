@@ -1,6 +1,5 @@
-import { GetServerSideProps } from 'next';
-
-import { Container, Box, Grid, Pagination } from '@material-ui/core';
+import Router from 'next/router';
+import { Container, Box, Button, Grid } from '@material-ui/core';
 
 import Layout from '../layouts/base.layout';
 import DashBoardLayout from '../layouts/dashboard.layout';
@@ -39,7 +38,7 @@ const TutorStudentListPage = ({ tutorStudent, tutors }: Props) => (
               pt: 3,
             }}
           >
-            <Pagination color="primary" count={3} size="small" />
+            <Button onClick={() => Router.back()}>Go Back</Button>
           </Box>
         </Container>
       </Box>

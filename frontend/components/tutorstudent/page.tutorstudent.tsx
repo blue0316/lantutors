@@ -15,7 +15,7 @@ const TutorStudentPage = ({ commonStudents, tutors }: Props) => (
   <>
     <DashboardLayout>
       <Layout title="Lantutors: Common Students">
-        <SubHeader tutors={tutors} />
+        {/* <SubHeader tutors={tutors} /> */}
         <Box
           sx={{
             backgroundColor: 'background.default',

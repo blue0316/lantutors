@@ -21,6 +21,8 @@ import {
   randomColor,
   capitalize,
 } from '../../utils/initialize';
+
+import { getStudent } from '../../services/get.service';
 import { useStudents } from '../../context/students.context';
 
 dayjs.extend(relativeTime);
@@ -60,7 +62,12 @@ const useStyles = makeStyles((theme) =>
 );
 
 const StudentCard = ({ student }: { student: Student }) => {
-  const { setSuspendedStudent, suspending } = useStudents();
+  const {
+    setSuspendedStudent,
+    suspendedStudent,
+    suspendedStudentData,
+    suspending,
+  } = useStudents();
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
@@ -70,20 +77,44 @@ const StudentCard = ({ student }: { student: Student }) => {
     [classes.buttonSuccess]: success,
   });
 
-  if (!loading) {
-    setSuccess(false);
-    setLoading(true);
-    timer.current = window.setTimeout(() => {
-      setSuccess(true);
-      setLoading(false);
-    }, 2000);
-  }
+  const [studentData, setStudentData] =
+    React.useState<Student>(student);
+
+  // if (!suspending) {
+  //   setSuccess(false);
+  //   setLoading(true);
+  //   timer.current = window.setTimeout(() => {
+  //     setSuccess(true);
+  //     setLoading(false);
+  //   }, 2000);
+  // }
+
+  // const loadStudent = async (email: string) => {
+  //   const response = await getStudent(email);
+  //   if (response && response.data) {
+  //     setStudentData(response.data);
+  //   }
+  // };
+
+  React.useEffect(() => {
+    if (suspendedStudentData) {
+      setStudentData(suspendedStudentData);
+    }
+  }, [suspendedStudentData]);
+
+  // React.useEffect(() => {
+  //   if (suspendedStudent) {
+  //     loadStudent(suspendedStudent);
+  //   }
+  // }, [suspendedStudent]);
 
   React.useEffect(() => {
     if (suspending) {
       setLoading(true);
+      setSuccess(false);
     } else {
       setLoading(false);
+      setSuccess(true);
     }
   }, [suspending]);
 
@@ -99,94 +130,122 @@ const StudentCard = ({ student }: { student: Student }) => {
       <CardContent>
         <Box
           sx={{
-            alignItems: 'left',
             display: 'flex',
             flexDirection: 'column',
+            pb: 3,
           }}
         >
-          <Avatar
-            style={{
-              backgroundColor: randomColor(),
-            }}
-          >
-            {capitalize(student.email)}
-          </Avatar>
-
-          <Typography color="textPrimary" gutterBottom variant="h3">
-            {initialize(student.email)}
-          </Typography>
           <Box
             sx={{
               alignItems: 'left',
               display: 'flex',
-              flexDirection: 'column',
+              justifyContent: 'space-between',
+              pb: 3,
+            }}
+          >
+            <Avatar
+              style={{
+                backgroundColor: randomColor(),
+              }}
+            >
+              {capitalize(studentData.email)}
+            </Avatar>
+            <Typography color="textPrimary" gutterBottom variant="h3">
+              {initialize(studentData.email)}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              alignItems: 'left',
+              display: 'flex',
+              justifyContent: 'space-between',
+              pb: 2,
             }}
           >
             <Typography color="textSecondary" variant="body1">
               ID:
             </Typography>
-            <Typography color="textSecondary" variant="body1">
-              {student.id}
+            <Typography color="textPrimary" variant="body1">
+              {studentData.id}
             </Typography>
           </Box>
+
+          <Divider />
+
+          <Box sx={{ flexGrow: 1 }} />
 
           <Box
             sx={{
               alignItems: 'left',
               display: 'flex',
-              flexDirection: 'column',
+              justifyContent: 'space-between',
+              pt: 2,
+              pb: 2,
             }}
           >
             <Typography color="textSecondary" variant="body1">
               Email:
             </Typography>
-            <Typography color="textSecondary" variant="body1">
-              {student.email}
+            <Typography color="textPrimary" variant="body1">
+              {studentData.email}
             </Typography>
           </Box>
+          <Divider />
+          <Box sx={{ flexGrow: 1 }} />
 
           <Box
             sx={{
               alignItems: 'left',
               display: 'flex',
-              flexDirection: 'column',
+              justifyContent: 'space-between',
+              pt: 2,
+              pb: 2,
             }}
           >
             <Typography color="textSecondary" variant="body1">
               Record Last Updated:
             </Typography>
-            <Typography color="textSecondary" variant="body1">
-              {dayjs(student.updatedAt).fromNow()}
+            <Typography color="textPrimary" variant="body1">
+              {dayjs(studentData.updatedAt).fromNow()}
             </Typography>
           </Box>
+
+          <Divider />
 
           <Box
             sx={{
               alignItems: 'left',
               display: 'flex',
-              flexDirection: 'column',
+              justifyContent: 'space-between',
+              pt: 2,
+              pb: 2,
             }}
           >
             <Typography color="textSecondary" variant="body1">
               Enrolled Since:
             </Typography>
-            <Typography color="textSecondary" variant="body1">
-              {dayjs(student.createdAt).fromNow()}
+            <Typography color="textPrimary" variant="body1">
+              {dayjs(studentData.createdAt).fromNow()}
             </Typography>
           </Box>
+
+          <Divider />
 
           <Box
             sx={{
               alignItems: 'left',
               display: 'flex',
-              flexDirection: 'column',
+              justifyContent: 'space-between',
+              pt: 2,
+              pb: 2,
             }}
           >
             <Typography color="textSecondary" variant="body1">
               Suspended Status:
             </Typography>
-            <Typography color="textSecondary" variant="body1">
-              {student.suspended.toString()}
+            <Typography color="textPrimary" variant="body1">
+              {studentData.suspended.toString().toUpperCase()}
             </Typography>
           </Box>
         </Box>
@@ -200,10 +259,10 @@ const StudentCard = ({ student }: { student: Student }) => {
             className={buttonClassname}
             disabled={loading}
             onClick={() => {
-              setSuspendedStudent(student.email);
+              setSuspendedStudent(studentData.email);
             }}
           >
-            Accept terms
+            Suspend
           </Button>
           {loading && (
             <CircularProgress

@@ -1,4 +1,11 @@
-import { Container, Box, Grid, Pagination } from '@material-ui/core';
+import Router from 'next/router';
+import {
+  Container,
+  Box,
+  Button,
+  Grid,
+  Pagination,
+} from '@material-ui/core';
 
 import Layout from '../layouts/base.layout';
 import DashBoardLayout from '../layouts/dashboard.layout';
@@ -23,7 +30,7 @@ const StudentCardPage = ({ student }: { student: Student }) => (
         <Container maxWidth={false}>
           <Box sx={{ pt: 3 }}>
             <Grid container spacing={3}>
-              <Grid item lg={4} md={6} sm={6} xs={12}>
+              <Grid item md={10} sm={12} xs={12}>
                 <StudentCard student={student} />
               </Grid>
             </Grid>
@@ -35,7 +42,7 @@ const StudentCardPage = ({ student }: { student: Student }) => (
               pt: 3,
             }}
           >
-            <Pagination color="primary" count={3} size="small" />
+            <Button onClick={() => Router.back()}>Go Back</Button>
           </Box>
         </Container>
       </Box>
