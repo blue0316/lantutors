@@ -1,40 +1,18 @@
-import { Box, Container } from '@material-ui/core';
 import {
   getTutors,
-  getStudents,
   getCommonStudents,
   getRawCommonStudents,
   getRawStudents,
 } from '../../services/get.service';
-import StudentsTable from '../../components/studenttable';
 
-import Layout from '../../components/layouts/base.layout';
-import DashboardLayout from '../../components/layouts/dashboard.layout';
+import StudentsPage from '../../components/students/page.students';
 
 type Props = {
-  tutors: Tutor[];
   students: Student[];
 };
-const StudentsPage = ({ tutors, students }: Props) => (
-  <DashboardLayout>
-    <Layout title="Lantutors: All Students">
-      <>
-        <Box
-          sx={{
-            backgroundColor: 'background.default',
-            minHeight: '100%',
-            py: 3,
-          }}
-        >
-          <Container maxWidth={false}>
-            <Box sx={{ pt: 3 }}>
-              <StudentsTable students={students} />
-            </Box>
-          </Container>
-        </Box>
-      </>
-    </Layout>
-  </DashboardLayout>
+
+const StudentsPageMain = ({ students }: Props) => (
+  <StudentsPage students={students} />
 );
 
 export async function getServerSideProps() {
@@ -53,4 +31,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default StudentsPage;
+export default StudentsPageMain;
