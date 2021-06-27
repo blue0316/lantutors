@@ -1,6 +1,6 @@
 import { Container, Box, Grid, Pagination } from '@material-ui/core';
 
-import Layout from '../layout';
+import Layout from '../layouts/base.layout';
 
 import DashboardLayout from '../layouts/dashboard.layout';
 import SubHeader from '../subheader';
