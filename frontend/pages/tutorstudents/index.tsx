@@ -1,12 +1,12 @@
-import TutorStudentPage from '../components/tutorstudent/page.tutorstudent';
+import TutorStudentPage from '../../components/tutorstudent/page.tutorstudent';
 
-import { reduceStudents } from '../utils/reducers';
+import { reduceStudents } from '../../utils/reducers';
 import {
   getRawCommonStudents,
   getTutors,
-} from '../services/get.service';
+} from '../../services/get.service';
 
-const Home = ({
+const TutorStudentsPage = ({
   commonStudents,
 }: {
   commonStudents: CommonStudentsApi[];
@@ -23,4 +23,4 @@ export async function getServerSideProps() {
     },
   };
 }
-export default Home;
+export default TutorStudentsPage;

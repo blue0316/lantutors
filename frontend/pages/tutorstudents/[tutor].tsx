@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
 }) => {
   const tutorStudent = await getCommonStudentsByTutor(
-    params && params.email
+    params && params.tutor
   );
 
   const tutors = await getTutors();
