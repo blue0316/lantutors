@@ -32,6 +32,10 @@ type StudentsDataType = {
   setStudentsData: React.Dispatch<
     React.SetStateAction<Student[] | undefined>
   >;
+  suspendedStudentData: Student | undefined;
+  setSuspendedStudentData: React.Dispatch<
+    React.SetStateAction<Student | undefined>
+  >;
   handleSuspend: () => Promise<void>;
   loadStudents: () => Promise<void>;
 };
@@ -60,6 +64,9 @@ export function StudentsProvider({
   const [message, setMessage] = React.useState<string | any>('');
   const [loading, setLoading] = React.useState<boolean>(false);
 
+  const [suspendedStudentData, setSuspendedStudentData] =
+    React.useState<Student | undefined>(undefined!);
+
   const loadStudents = async () => {
     setLoading(true);
     const response = await getRawStudents();
@@ -69,7 +76,14 @@ export function StudentsProvider({
     }
   };
 
-  const router = useRouter();
+  const loadStudent = async (email: string) => {
+    setLoading(true);
+    const response = await getStudent(email);
+    if (response && response.data) {
+      setSuspendedStudentData(response.data);
+    }
+  };
+
   const onSuccess = (text: string | any) => {
     setMessage(text);
     setOpenSuccess(true);
@@ -112,9 +126,11 @@ export function StudentsProvider({
               }, 750);
               setTimeout(() => {
                 setSuspending(false);
-                setSuspendedStudent('');
+
                 setTimeout(() => {
                   loadStudents();
+                  loadStudent(suspendedStudent);
+                  setSuspendedStudent('');
                   // setTimeout(() => {
                   //   router.reload();
                   // }, 400);
@@ -163,6 +179,8 @@ export function StudentsProvider({
         setStudentsData,
         loading,
         setLoading,
+        suspendedStudentData,
+        setSuspendedStudentData,
       }}
     >
       {children}
