@@ -58,6 +58,7 @@ const CommonStudentList = ({ students }: { students: string[] }) => {
   const loadReset = async (lparams: any) => {
     setLoading(true);
     const response = await getCommonStudentsBySearchParam(
+      // @ts-ignore
       lparams.map((data) => data.tutor !== 'false' && data.entry)
     );
     if (response && response.data) {
@@ -98,7 +99,7 @@ const CommonStudentList = ({ students }: { students: string[] }) => {
 
   return (
     <>
-      <Box cx={{ mb: 3 }}>
+      <Box sx={{ mb: 3 }}>
         {' '}
         <Typography variant="h6">
           `Check` Any of the Tutors Above

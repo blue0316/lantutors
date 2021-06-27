@@ -35,7 +35,8 @@ const StudentsTable = ({ students }: { students: Student[] }) => {
   return (
     <Card>
       <>
-        <Box sx={{ height: 900, width: '100%' }}>
+        WAHAWTHAHT
+        {/* <Box sx={{ height: 900, width: '100%' }}>
           <DataGrid
             rows={data.map((d) => ({
               id: d.id,
@@ -134,7 +135,7 @@ const StudentsTable = ({ students }: { students: Student[] }) => {
             pageSize={50}
             loading={loading}
           />
-        </Box>
+        </Box> */}
       </>
     </Card>
   );

@@ -69,7 +69,7 @@ const NotificationCard = ({
         height: '100%',
       }}
     >
-      <CardContent>
+      {/* <CardContent>
         <Box
           sx={{
             display: 'flex',
@@ -114,7 +114,8 @@ const NotificationCard = ({
         <Typography align="left" color="textPrimary" variant="body2">
           {notification.message}
         </Typography>
-      </CardContent>
+      </CardContent> */}
+      WHATTTTT
       <Box sx={{ flexGrow: 1 }} />
       <Divider />
       <Box sx={{ p: 2 }}>

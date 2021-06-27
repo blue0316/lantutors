@@ -11,7 +11,11 @@ import {
 } from '@material-ui/core';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
-import { User as UserIcon, Users as Students } from 'react-feather';
+import {
+  User as UserIcon,
+  Users as Students,
+  ArrowRightCircle as View,
+} from 'react-feather';
 
 import TutorStudentList from './list.tutorstudent';
 import { initialize, randomColor } from '../../utils/initialize';
@@ -91,32 +95,39 @@ const TutorStudentCard = ({
               display: 'flex',
             }}
           >
-            <UserIcon />
+            <View />
             <Link
               href={`/tutorstudent/${encodeURIComponent(
                 commonStudent.tutor
               )}`}
             >
-              {email ? (
-                <Typography
-                  color="textSecondary"
-                  display="inline"
-                  sx={{ pl: 1 }}
-                  variant="body2"
-                >
-                  @View your Students
-                </Typography>
-              ) : (
-                <Typography
-                  color="textSecondary"
-                  display="inline"
-                  sx={{ pl: 1 }}
-                  variant="body2"
-                >
-                  @View @tutor{initialize(commonStudent.tutor)}'s
-                  Students
-                </Typography>
-              )}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  cursor: 'pointer',
+                }}
+              >
+                {email ? (
+                  <Typography
+                    color="textSecondary"
+                    display="inline"
+                    sx={{ pl: 1 }}
+                    variant="body2"
+                  >
+                    Your Students
+                  </Typography>
+                ) : (
+                  <Typography
+                    color="textSecondary"
+                    display="inline"
+                    sx={{ pl: 1 }}
+                    variant="body2"
+                  >
+                    @Tutor{initialize(commonStudent.tutor)}'s Students
+                  </Typography>
+                )}
+              </Box>
             </Link>
           </Grid>
         </Grid>

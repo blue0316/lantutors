@@ -3,19 +3,17 @@ import { Container, Box, Grid, Pagination } from '@material-ui/core';
 import Layout from '../layouts/base.layout';
 
 import DashboardLayout from '../layouts/dashboard.layout';
-import SubHeader from '../subheader';
+
 import TutorStudentCard from './card.tutorstudent';
 
-type Props = {
+const TutorStudentPage = ({
+  commonStudents,
+}: {
   commonStudents: CommonStudentsApi[];
-  tutors: Tutor[];
-};
-
-const TutorStudentPage = ({ commonStudents, tutors }: Props) => (
+}) => (
   <>
     <DashboardLayout>
       <Layout title="Lantutors: Common Students">
-        {/* <SubHeader tutors={tutors} /> */}
         <Box
           sx={{
             backgroundColor: 'background.default',

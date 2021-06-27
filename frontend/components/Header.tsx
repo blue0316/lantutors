@@ -71,7 +71,8 @@ const Header = ({ tutors }: Props) => {
         {tutors &&
           tutors.map((tutor) => (
             <>
-              <Typography
+              AWEAGWAEGAGAEGAEGAGE
+              {/* <Typography
                 variant="body2"
                 noWrap
                 className={classes.toolbarLink}
@@ -88,7 +89,7 @@ const Header = ({ tutors }: Props) => {
                   }
                   label={initialize(tutor.email)}
                 />
-              </Typography>
+              </Typography> */}
             </>
           ))}
       </Toolbar>
