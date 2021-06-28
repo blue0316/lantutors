@@ -6,7 +6,7 @@ import { RequestTicket } from './request.service';
  *
  * @see RequestTicket
  * @param  {} url url string of backend resource /api/retrievenotifications
- * @param  {} body body of post request (new Snippets, new Collections)
+ * @param  {} body body of post request (new Students, new Tutors)
  * @return {null} handles frontend rerouting once fulfilled without explicit return
  */
 export function postRequest({
