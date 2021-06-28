@@ -80,33 +80,11 @@ const StudentCard = ({ student }: { student: Student }) => {
   const [studentData, setStudentData] =
     React.useState<Student>(student);
 
-  // if (!suspending) {
-  //   setSuccess(false);
-  //   setLoading(true);
-  //   timer.current = window.setTimeout(() => {
-  //     setSuccess(true);
-  //     setLoading(false);
-  //   }, 2000);
-  // }
-
-  // const loadStudent = async (email: string) => {
-  //   const response = await getStudent(email);
-  //   if (response && response.data) {
-  //     setStudentData(response.data);
-  //   }
-  // };
-
   React.useEffect(() => {
     if (suspendedStudentData) {
       setStudentData(suspendedStudentData);
     }
   }, [suspendedStudentData]);
-
-  // React.useEffect(() => {
-  //   if (suspendedStudent) {
-  //     loadStudent(suspendedStudent);
-  //   }
-  // }, [suspendedStudent]);
 
   React.useEffect(() => {
     if (suspending) {
@@ -262,7 +240,7 @@ const StudentCard = ({ student }: { student: Student }) => {
               setSuspendedStudent(studentData.email);
             }}
           >
-            Suspend
+            {studentData.suspended === true ? 'Unsuspend' : 'Suspend'}
           </Button>
           {loading && (
             <CircularProgress
