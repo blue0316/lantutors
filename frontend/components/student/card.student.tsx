@@ -87,6 +87,12 @@ const StudentCard = ({ student }: { student: Student }) => {
   }, [suspendedStudentData]);
 
   React.useEffect(() => {
+    if (student) {
+      setStudentData(student);
+    }
+  }, [student]);
+
+  React.useEffect(() => {
     if (suspending) {
       setLoading(true);
       setSuccess(false);
