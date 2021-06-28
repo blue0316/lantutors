@@ -139,13 +139,20 @@ export function TutorProvider({
     };
   }, []);
 
-  React.useEffect(() => {
-    if (!(email || loggedIn)) {
-      storage.clearUserLocal();
-      storage.setLogoutEvent();
-      router.push('/');
-    }
-  }, [email, loggedIn]);
+  /**
+   * Disable secrity for NEXTJS
+   * Only uncomment below for SPA with CRA.
+   * NEXTJS will always pre-render, so data in memory will not persist.
+   *
+   */
+
+  // React.useEffect(() => {
+  //   if (!(email || loggedIn)) {
+  //     storage.clearUserLocal();
+  //     storage.setLogoutEvent();
+  //     router.push('/');
+  //   }
+  // }, [email, loggedIn]);
 
   return (
     <TutorContext.Provider
