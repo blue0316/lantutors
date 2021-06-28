@@ -7,8 +7,8 @@ import axios from 'axios';
  * All `get` views are public.
  *
  * @file defines all get methods to retrieve data from backend
- * @see ProfileDataProvider
- * @see AppDataProvider
+ * @see TutorProvider
+ * @see NotificationsProvider
  */
 
 /**
