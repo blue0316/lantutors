@@ -1,3 +1,9 @@
+/**
+ * Test Suites
+ * run `yarn pretest`
+ * then `yarn test`
+ */
+
 require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 
 const request = require('supertest');
@@ -8,6 +14,10 @@ import factories from '../testUtils/factories';
 const { truncate } = require('../testHelper');
 
 describe('Api Controller', () => {
+  beforeEach(() => {
+    return truncate();
+  });
+
   describe('Register API', () => {
     describe('Invalid body', () => {
       beforeEach(() => {
@@ -163,8 +173,11 @@ describe('Api Controller', () => {
   });
 
   describe('GetCommonStudents API', () => {
+    beforeEach(() => {
+      return truncate();
+    });
     describe('Invalid query', () => {
-      beforeEach(() => {
+      afterEach(() => {
         return truncate();
       });
       it('should fail without tutor ', async (done) => {
@@ -201,7 +214,7 @@ describe('Api Controller', () => {
     });
 
     describe('Valid query', () => {
-      beforeEach(() => {
+      afterEach(() => {
         return truncate();
       });
       it('should pass for single common tutor ', async (done) => {
@@ -269,9 +282,9 @@ describe('Api Controller', () => {
          * `students` in response body should be an array of `constantTutor`'s students
          */
         expect(students).toEqual([
+          constantStudent1,
           constantStudent2,
           constantStudent3,
-          constantStudent1,
         ]);
         expect(statusCode).toEqual(200);
         done();
@@ -442,6 +455,9 @@ describe('Api Controller', () => {
       return truncate();
     });
     describe('Invalid body', () => {
+      afterEach(() => {
+        return truncate();
+      });
       it('should fail if student is empty', async (done) => {
         const { statusCode, body } = await request(app)
           .post('/api/suspend')
@@ -524,6 +540,9 @@ describe('Api Controller', () => {
       return truncate();
     });
     describe('Invalid body', () => {
+      afterEach(() => {
+        return truncate();
+      });
       it('should fail if tutor is empty', async (done) => {
         const { statusCode, body } = await request(app)
           .post('/api/retrievenotifications')
@@ -558,234 +577,234 @@ describe('Api Controller', () => {
         done();
       });
     });
-  });
 
-  describe('Valid body', () => {
-    beforeEach(() => {
-      return truncate();
-    });
-    it('should fail if tutor doesnt exist', async (done) => {
-      /**
-       * Register random students emails to an unregistered tutor
-       */
-      const { statusCode, body } = await request(app)
-        .post('/api/retrievenotifications')
-        .send({
-          tutor: faker.internet.email(),
-          notification:
-            faker.hacker.phrase() +
-            faker.internet.email() +
-            faker.hacker.phrase() +
-            faker.internet.email(),
-        });
-      const { message } = body;
-
-      expect(message).toEqual('An account could not be found');
-      expect(statusCode).toEqual(400);
-      done();
-    });
-
-    it('should pass and retrieve students that belongs to the tutor', async (done) => {
-      /**
-       * Instantiate a new tutor
-       */
-      const tutor = await factories.create('Tutor', {
-        email: faker.internet.email(),
-        password: faker.internet.password(),
+    describe('Valid body', () => {
+      afterEach(() => {
+        return truncate();
       });
-      /**
-       * Initialize three new emails
-       */
-      const student1 = faker.internet.email();
-      const student2 = faker.internet.email();
-      const student3 = faker.internet.email();
-      /**
-       * Instantiate new students with those emails
-       */
-      await factories.createMany('Student', 3, [
-        { email: student1 },
-        { email: student2 },
-        { email: student3 },
-      ]);
-      /**
-       * Associate those new students to the tutor
-       */
-      await factories.createMany('TutorStudent', 3, [
-        { student: student1, tutor: tutor.email },
-        { student: student2, tutor: tutor.email },
-        { student: student3, tutor: tutor.email },
-      ]);
-      /**
-       * Issue a notification from the tutor
-       * with no mentioned students
-       */
-      const { statusCode, body } = await request(app)
-        .post('/api/retrievenotifications')
-        .send({
-          tutor: tutor.email,
-          notification: faker.hacker.phrase(),
-        });
-      const { message } = body;
+      it('should fail if tutor doesnt exist', async (done) => {
+        /**
+         * Register random students emails to an unregistered tutor
+         */
+        const { statusCode, body } = await request(app)
+          .post('/api/retrievenotifications')
+          .send({
+            tutor: faker.internet.email(),
+            notification:
+              faker.hacker.phrase() +
+              faker.internet.email() +
+              faker.hacker.phrase() +
+              faker.internet.email(),
+          });
+        const { message } = body;
 
-      expect(message).toEqual('Notification posted');
-      expect(statusCode).toEqual(200);
-      done();
-    });
-
-    it('should pass and retrieve students that belongs to the tutor and mentioned students', async (done) => {
-      /**
-       * Instantiate a new tutor
-       */
-      const tutor = await factories.create('Tutor', {
-        email: faker.internet.email(),
-        password: faker.internet.password(),
+        expect(message).toEqual('An account could not be found');
+        expect(statusCode).toEqual(400);
+        done();
       });
-      /**
-       * Initialize three new emails to assign to tutor
-       */
-      const student1 = faker.internet.email();
-      const student2 = faker.internet.email();
-      const student3 = faker.internet.email();
-      /**
-       * Initialize three new emails to be unassignged but mentioned
-       */
-      const mentioned1 = faker.internet.email();
-      const mentioned2 = faker.internet.email();
-      const mentioned3 = faker.internet.email();
-      /**
-       * Instantiate new students with those emails
-       */
-      await factories.createMany('Student', 6, [
-        { email: student1 },
-        { email: student2 },
-        { email: student3 },
-        { email: mentioned1 },
-        { email: mentioned2 },
-        { email: mentioned3 },
-      ]);
-      /**
-       * Associate only three of the students to the tutor
-       */
-      await factories.createMany('TutorStudent', 3, [
-        { student: student1, tutor: tutor.email },
-        { student: student2, tutor: tutor.email },
-        { student: student3, tutor: tutor.email },
-      ]);
-      /**
-       * Issue a notification from `tutor` that doesn't mention
-       * `students` belonging to `tutor` and  includes
-       * students `mentioned` in the body of the notification
-       */
-      const { statusCode, body } = await request(app)
-        .post('/api/retrievenotifications')
-        .send({
-          tutor: tutor.email,
-          notification:
-            mentioned1 +
-            ' ' +
-            faker.random.word() +
-            ' ' +
-            'constant1@student.com' +
-            ' ' +
-            faker.random.word() +
-            ' ' +
-            mentioned2 +
-            ' ' +
-            'constant2@student.com' +
-            ' ' +
-            faker.random.word() +
-            ' ' +
-            mentioned3 +
-            faker.random.word(),
+
+      it('should pass and retrieve students that belongs to the tutor', async (done) => {
+        /**
+         * Instantiate a new tutor
+         */
+        const tutor = await factories.create('Tutor', {
+          email: faker.internet.email(),
+          password: faker.internet.password(),
         });
-      const { message } = body;
+        /**
+         * Initialize three new emails
+         */
+        const student1 = faker.internet.email();
+        const student2 = faker.internet.email();
+        const student3 = faker.internet.email();
+        /**
+         * Instantiate new students with those emails
+         */
+        await factories.createMany('Student', 3, [
+          { email: student1 },
+          { email: student2 },
+          { email: student3 },
+        ]);
+        /**
+         * Associate those new students to the tutor
+         */
+        await factories.createMany('TutorStudent', 3, [
+          { student: student1, tutor: tutor.email },
+          { student: student2, tutor: tutor.email },
+          { student: student3, tutor: tutor.email },
+        ]);
+        /**
+         * Issue a notification from the tutor
+         * with no mentioned students
+         */
+        const { statusCode, body } = await request(app)
+          .post('/api/retrievenotifications')
+          .send({
+            tutor: tutor.email,
+            notification: faker.hacker.phrase(),
+          });
+        const { message } = body;
 
-      expect(message).toEqual('Notification posted');
-
-      expect(statusCode).toEqual(200);
-      done();
-    });
-
-    it('should pass and retrieve students that are not suspended only', async (done) => {
-      /**
-       * Instantiate a new tutor
-       */
-      const tutor = await factories.create('Tutor', {
-        email: faker.internet.email(),
-        password: faker.internet.password(),
+        expect(message).toEqual('Notification posted');
+        expect(statusCode).toEqual(200);
+        done();
       });
-      /**
-       * Initialize three new emails to assign to tutor
-       */
-      const student1 = faker.internet.email();
-      const student2 = faker.internet.email();
-      const student3 = faker.internet.email();
-      /**
-       * Initialize three new emails to be unassignged
-       */
-      const mentioned1 = faker.internet.email();
-      const mentioned2 = faker.internet.email();
-      const mentioned3 = faker.internet.email();
-      /**
-       * Instantiate all new students with those emails
-       * Suspend two students belonging students and two mentioned students
-       */
-      await factories.createMany('Student', 6, [
-        { email: student1, suspended: true },
-        { email: student2, suspended: true },
-        { email: student3 },
-        { email: mentioned1, suspended: true },
-        { email: mentioned2, suspended: true },
-        { email: mentioned3 },
-      ]);
-      /**
-       * Associate all of the students to the tutor
-       */
-      await factories.createMany('TutorStudent', 3, [
-        { student: student1, tutor: tutor.email },
-        { student: student2, tutor: tutor.email },
-        { student: student3, tutor: tutor.email },
-        { student: mentioned1, tutor: tutor.email },
-        { student: mentioned2, tutor: tutor.email },
-        { student: mentioned3, tutor: tutor.email },
-      ]);
 
-      /**
-       * Issue a notification from the tutor that includes
-       * and mention all students
-       */
-
-      const { statusCode, body } = await request(app)
-        .post('/api/retrievenotifications')
-        .send({
-          tutor: tutor.email,
-          notification:
-            student1 +
-            ' ' +
-            faker.random.word() +
-            ' ' +
-            student2 +
-            ' ' +
-            faker.random.word() +
-            ' ' +
-            student3 +
-            ' ' +
-            mentioned1 +
-            ' ' +
-            faker.random.word() +
-            ' ' +
-            mentioned2 +
-            ' ' +
-            faker.random.word() +
-            ' ' +
-            mentioned3,
+      it('should pass and retrieve students that belongs to the tutor and mentioned students', async (done) => {
+        /**
+         * Instantiate a new tutor
+         */
+        const tutor = await factories.create('Tutor', {
+          email: faker.internet.email(),
+          password: faker.internet.password(),
         });
-      const { message } = body;
+        /**
+         * Initialize three new emails to assign to tutor
+         */
+        const student1 = faker.internet.email();
+        const student2 = faker.internet.email();
+        const student3 = faker.internet.email();
+        /**
+         * Initialize three new emails to be unassignged but mentioned
+         */
+        const mentioned1 = faker.internet.email();
+        const mentioned2 = faker.internet.email();
+        const mentioned3 = faker.internet.email();
+        /**
+         * Instantiate new students with those emails
+         */
+        await factories.createMany('Student', 6, [
+          { email: student1 },
+          { email: student2 },
+          { email: student3 },
+          { email: mentioned1 },
+          { email: mentioned2 },
+          { email: mentioned3 },
+        ]);
+        /**
+         * Associate only three of the students to the tutor
+         */
+        await factories.createMany('TutorStudent', 3, [
+          { student: student1, tutor: tutor.email },
+          { student: student2, tutor: tutor.email },
+          { student: student3, tutor: tutor.email },
+        ]);
+        /**
+         * Issue a notification from `tutor` that doesn't mention
+         * `students` belonging to `tutor` and  includes
+         * students `mentioned` in the body of the notification
+         */
+        const { statusCode, body } = await request(app)
+          .post('/api/retrievenotifications')
+          .send({
+            tutor: tutor.email,
+            notification:
+              mentioned1 +
+              ' ' +
+              faker.random.word() +
+              ' ' +
+              'constant1@student.com' +
+              ' ' +
+              faker.random.word() +
+              ' ' +
+              mentioned2 +
+              ' ' +
+              'constant2@student.com' +
+              ' ' +
+              faker.random.word() +
+              ' ' +
+              mentioned3 +
+              faker.random.word(),
+          });
+        const { message } = body;
 
-      expect(message).toEqual('Notification posted');
+        expect(message).toEqual('Notification posted');
 
-      expect(statusCode).toEqual(200);
-      done();
+        expect(statusCode).toEqual(200);
+        done();
+      });
+
+      it('should pass and retrieve students that are not suspended only', async (done) => {
+        /**
+         * Instantiate a new tutor
+         */
+        const tutor = await factories.create('Tutor', {
+          email: faker.internet.email(),
+          password: faker.internet.password(),
+        });
+        /**
+         * Initialize three new emails to assign to tutor
+         */
+        const student1 = faker.internet.email();
+        const student2 = faker.internet.email();
+        const student3 = faker.internet.email();
+        /**
+         * Initialize three new emails to be unassignged
+         */
+        const mentioned1 = faker.internet.email();
+        const mentioned2 = faker.internet.email();
+        const mentioned3 = faker.internet.email();
+        /**
+         * Instantiate all new students with those emails
+         * Suspend two students belonging students and two mentioned students
+         */
+        await factories.createMany('Student', 6, [
+          { email: student1, suspended: true },
+          { email: student2, suspended: true },
+          { email: student3 },
+          { email: mentioned1, suspended: true },
+          { email: mentioned2, suspended: true },
+          { email: mentioned3 },
+        ]);
+        /**
+         * Associate all of the students to the tutor
+         */
+        await factories.createMany('TutorStudent', 3, [
+          { student: student1, tutor: tutor.email },
+          { student: student2, tutor: tutor.email },
+          { student: student3, tutor: tutor.email },
+          { student: mentioned1, tutor: tutor.email },
+          { student: mentioned2, tutor: tutor.email },
+          { student: mentioned3, tutor: tutor.email },
+        ]);
+
+        /**
+         * Issue a notification from the tutor that includes
+         * and mention all students
+         */
+
+        const { statusCode, body } = await request(app)
+          .post('/api/retrievenotifications')
+          .send({
+            tutor: tutor.email,
+            notification:
+              student1 +
+              ' ' +
+              faker.random.word() +
+              ' ' +
+              student2 +
+              ' ' +
+              faker.random.word() +
+              ' ' +
+              student3 +
+              ' ' +
+              mentioned1 +
+              ' ' +
+              faker.random.word() +
+              ' ' +
+              mentioned2 +
+              ' ' +
+              faker.random.word() +
+              ' ' +
+              mentioned3,
+          });
+        const { message } = body;
+
+        expect(message).toEqual('Notification posted');
+
+        expect(statusCode).toEqual(200);
+        done();
+      });
     });
   });
 });
