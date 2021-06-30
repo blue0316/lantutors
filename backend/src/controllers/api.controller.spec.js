@@ -169,34 +169,33 @@ describe('Api Controller', () => {
       });
       it('should fail without tutor ', async (done) => {
         const { statusCode, body } = await request(app)
-          .get('/api/getcommonstudents?tutor=', {
-            tutor: '',
-          })
+          .get('/api/commonstudents?tutor=')
           .send();
-        const { message, details } = body;
-        console.log(body);
-        expect(message).toEqual('Validation Failed');
-        expect(details).toEqual([{ tutor: '"tutor" is required' }]);
-        expect(statusCode).toEqual(400);
+
+        const { students } = body;
+
+        /**
+         * `students` in response body should be an empty array
+         * as there are no students to an empty tutor
+         */
+        expect(students).toEqual([]);
+        expect(statusCode).toEqual(200);
         done();
       });
 
-      const error = faker.random.word();
-
       it('should fail if tutor is not an email ', async (done) => {
+        const error = faker.random.word();
         const { statusCode, body } = await request(app)
-          .get('/api/getcommonstudents' + `?tutor=${error}'`, {
-            tutor: error,
-          })
+          .get('/api/commonstudents' + `?tutor=${error}'`)
           .send();
-        const { message, details } = body;
-        console.log(body);
+        const { students } = body;
 
-        expect(message).toEqual('Validation Failed');
-        expect(details).toEqual([
-          { tutor: '"tutor" must be a valid email' },
-        ]);
-        expect(statusCode).toEqual(400);
+        /**
+         * `students` in response body should be an empty array
+         * as there are no students to a tutor that is not an email
+         */
+        expect(students).toEqual([]);
+        expect(statusCode).toEqual(200);
         done();
       });
     });
@@ -206,17 +205,73 @@ describe('Api Controller', () => {
         return truncate();
       });
       it('should pass for single common tutor ', async (done) => {
-        const tutor = 'constant@tutor.com';
-        const { statusCode, body } = await request(app)
-          .get('/api/getcommonstudents' + `?tutor=${tutor}`, {
-            tutor: tutor,
-          })
-          .send();
-        const { message, details } = body;
+        /**
+         * Initialize an email for constant tutor
+         */
+        const constantTutorEmail = faker.internet.email();
+        /**
+         * Initialize emails for constant tutor's students
+         */
+        const constantStudent1 = faker.internet.email();
+        const constantStudent2 = faker.internet.email();
+        const constantStudent3 = faker.internet.email();
 
-        expect(message).toEqual('Common Students returned');
-        expect(details).toEqual([
-          { tutor: '"tutor" must be a valid email' },
+        /**
+         * Instantiate a Tutor using above variables
+         */
+
+        await factories.create('Tutor', {
+          email: constantTutorEmail,
+          password: faker.internet.password(),
+        });
+
+        /**
+         * Instantiate students using above variables
+         */
+
+        await factories.createMany('Student', 3, [
+          {
+            email: constantStudent1,
+          },
+          {
+            email: constantStudent2,
+          },
+          {
+            email: constantStudent3,
+          },
+        ]);
+
+        /**
+         * Create `constantTutor` to `constantStudent` associations
+         * with the new records
+         */
+        await factories.createMany('TutorStudent', 3, [
+          {
+            tutor: constantTutorEmail,
+            student: constantStudent1,
+          },
+          {
+            tutor: constantTutorEmail,
+            student: constantStudent2,
+          },
+          {
+            tutor: constantTutorEmail,
+            student: constantStudent3,
+          },
+        ]);
+
+        const { statusCode, body } = await request(app)
+          .get('/api/commonstudents' + `?tutor=${constantTutorEmail}`)
+          .send();
+        const { students } = body;
+
+        /**
+         * `students` in response body should be an array of `constantTutor`'s students
+         */
+        expect(students).toEqual([
+          constantStudent2,
+          constantStudent3,
+          constantStudent1,
         ]);
         expect(statusCode).toEqual(200);
         done();
@@ -224,48 +279,158 @@ describe('Api Controller', () => {
 
       it('should pass for multiple common tutor', async (done) => {
         /**
-         * Existing Tutor
+         * Initialize an email for constant tutor
          */
-        const constantTutor = 'constant@tutor.com';
+        const constantTutorEmail = faker.internet.email();
+
         /**
-         * Instantiate one new tutor
+         * Initialize an email for common tutor
          */
-        const commonTutor = await factories.create('Tutor', {
-          email: 'common@tutor.com',
-          password: faker.internet.password(),
-        });
+        const commonTutorEmail = faker.internet.email();
+
         /**
-         * Register existing students `constants<1-3>@students`
-         * and new students `common<1-3>@students`
-         * with existing new tutor
+         * Initialize emails for constant tutor's students
          */
-        await request(app)
-          .post('/api/register')
-          .send({
-            tutor: commonTutor.email,
-            students: [
-              'constant1@student.com',
-              'constant2@student.com',
-              'constant3@student.com',
-              'common1@student.com',
-              'common2@student.com',
-              'common3@student.com',
-            ],
-          });
+        const constantStudent1 = faker.internet.email();
+        const constantStudent2 = faker.internet.email();
+        const constantStudent3 = faker.internet.email();
+
+        /**
+         * Initialize emails for common tutor's students
+         */
+        const commonStudent1 = faker.internet.email();
+        const commonStudent2 = faker.internet.email();
+        const commonStudent3 = faker.internet.email();
+        /**
+         * Initialize emails for common tutor's and constant tutor's shared students
+         */
+        const sharedStudent1 = faker.internet.email();
+        const sharedStudent2 = faker.internet.email();
+        const sharedStudent3 = faker.internet.email();
+
+        /**
+         * Instantiate Constant Tutor and Common Tutor using above variables
+         */
+
+        await factories.createMany('Tutor', 2, [
+          {
+            email: constantTutorEmail,
+            password: faker.internet.password(),
+          },
+          {
+            email: commonTutorEmail,
+            password: faker.internet.password(),
+          },
+        ]);
+        /**
+         * Instantiate all students with above variables
+         */
+
+        await factories.createMany('Student', 9, [
+          {
+            email: constantStudent1,
+          },
+          {
+            email: constantStudent2,
+          },
+          {
+            email: constantStudent3,
+          },
+          {
+            email: commonStudent1,
+          },
+          {
+            email: commonStudent2,
+          },
+          {
+            email: commonStudent3,
+          },
+          {
+            email: sharedStudent1,
+          },
+          {
+            email: sharedStudent2,
+          },
+          {
+            email: sharedStudent3,
+          },
+        ]);
+
+        /**
+         * Create `constantTutor` to `constantStudent` + `sharedStudent`,
+         * `commonTutor` to `commonStudent` + `sharedStudent` associations
+         */
+
+        await factories.createMany('TutorStudent', 12, [
+          {
+            tutor: constantTutorEmail,
+            student: constantStudent1,
+          },
+          {
+            tutor: constantTutorEmail,
+            student: constantStudent2,
+          },
+          {
+            tutor: constantTutorEmail,
+            student: constantStudent3,
+          },
+          {
+            tutor: constantTutorEmail,
+            student: sharedStudent1,
+          },
+          {
+            tutor: constantTutorEmail,
+            student: sharedStudent2,
+          },
+          {
+            tutor: constantTutorEmail,
+            student: sharedStudent3,
+          },
+          // common
+          {
+            tutor: commonTutorEmail,
+            student: commonStudent1,
+          },
+          {
+            tutor: commonTutorEmail,
+            student: commonStudent2,
+          },
+          {
+            tutor: commonTutorEmail,
+            student: commonStudent3,
+          },
+          {
+            tutor: commonTutorEmail,
+            student: sharedStudent1,
+          },
+          {
+            tutor: commonTutorEmail,
+            student: sharedStudent2,
+          },
+          {
+            tutor: commonTutorEmail,
+            student: sharedStudent3,
+          },
+        ]);
+
         const { statusCode, body } = await request(app)
           .get(
-            '/api/getcommonstudents' +
-              `?tutor=${constantTutor}` +
-              `&tutor=${commonTutor.email}`,
-            {
-              tutor: [constantTutor, commonTutor.email],
-            }
+            '/api/commonstudents' +
+              `?tutor=${constantTutorEmail}` +
+              `&tutor=${commonTutorEmail}`
           )
           .send();
-        const { message } = body;
+        const { students } = body;
 
-        expect(message).toEqual('Common Students returned');
-
+        /**
+         * `students` in response body should be an array of `constantTutor` and
+         * `commonTutor`'s shared students
+         */
+        expect(students).toEqual([
+          sharedStudent1,
+          sharedStudent2,
+          sharedStudent3,
+        ]);
         expect(statusCode).toEqual(200);
         done();
       });
@@ -280,14 +445,12 @@ describe('Api Controller', () => {
       it('should fail if student is empty', async (done) => {
         const { statusCode, body } = await request(app)
           .post('/api/suspend')
-          .send({
-            student: '',
-          });
+          .send({});
         const { message, details } = body;
 
         expect(message).toEqual('Validation Failed');
         expect(details).toEqual([
-          { student: '"student" is not allowed to be empty' },
+          { student: '"student" is required' },
         ]);
         expect(statusCode).toEqual(400);
         done();
@@ -345,9 +508,9 @@ describe('Api Controller', () => {
           .send({
             student: student.email,
           });
-        const { message } = body;
+        const { messsage } = body;
 
-        expect(message).toEqual(
+        expect(messsage).toEqual(
           `${email.split('@')[0]} has been suspended`
         );
         expect(statusCode).toEqual(200);
