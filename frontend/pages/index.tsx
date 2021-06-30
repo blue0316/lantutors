@@ -9,8 +9,6 @@ import {
 import MainLayout from '../components/layouts/main.layout';
 import Layout from '../components/layouts/base.layout';
 
-import { getTutors } from '../services/get.service';
-
 import { useTutor } from '../context/tutor.context';
 
 const IndexPage = () => {
