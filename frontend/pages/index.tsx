@@ -13,7 +13,7 @@ import { getTutors } from '../services/get.service';
 
 import { useTutor } from '../context/tutor.context';
 
-const IndexPage = ({ tutors }: { tutors: Tutor[] }) => {
+const IndexPage = () => {
   const {
     email,
     setEmail,
@@ -94,17 +94,5 @@ const IndexPage = ({ tutors }: { tutors: Tutor[] }) => {
     </MainLayout>
   );
 };
-
-export async function getServerSideProps() {
-  const allTutors = await getTutors();
-  // const allCommon = await getRawCommonStudents();
-
-  return {
-    props: {
-      // commonStudents: reduceStudents(allCommon.data),
-      tutors: allTutors.data,
-    },
-  };
-}
 
 export default IndexPage;
